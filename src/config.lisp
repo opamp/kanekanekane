@@ -20,16 +20,16 @@
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 
 (defconfig :common
-  `(:databases ((:maindb :sqlite3 :database-name ":memory:"))))
+    `(:databases ((:maindb :postgres :host "localhost" :database-name "kanekanekane_devel" :username "devel"))))
 
 (defconfig |development|
-  '())
+    `(:databases ((:maindb :postgres :host "localhost" :database-name "kanekanekane_devel" :username "devel"))))
 
 (defconfig |production|
-  '())
+    `())
 
 (defconfig |test|
-  '())
+    `(:databases ((:maindb :postgres :host "localhost" :database-name "kanekanekane_devel" :username "devel"))))
 
 (defun config (&optional key)
   (envy:config #.(package-name *package*) key))
