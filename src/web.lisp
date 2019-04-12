@@ -24,6 +24,9 @@
 ;; Routing rules
 
 (defroute "/" ()
+  (if (null (gethash :username *session*))
+      
+      )
   (render #P"index.html"))
 
 ;;
