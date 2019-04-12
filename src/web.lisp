@@ -6,7 +6,8 @@
         :kanekanekane.view
         :kanekanekane.db
         :datafly
-        :sxql)
+        :sxql
+        :kanekanekane.web-utils)
   (:export :*web*))
 (in-package :kanekanekane.web)
 
@@ -24,9 +25,6 @@
 ;; Routing rules
 
 (defroute "/" ()
-  (if (null (gethash :username *session*))
-      
-      )
   (render #P"index.html"))
 
 ;;
