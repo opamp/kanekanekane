@@ -17,7 +17,10 @@
 
                ;; for DB
                "datafly"
-               "sxql")
+               "sxql"
+
+               ;; additional dependencies
+               "ironclad")
   :components ((:module "src"
                 :components
                 ((:file "main" :depends-on ("config" "view" "db"))
