@@ -29,6 +29,7 @@
             (render #p"index.html")
             (jump-to "/signin")))
 
+
 (defroute ("/signin" :method :GET) ()
   (if-login *session*
             (progn
@@ -46,10 +47,10 @@
           (jump-to "/"))
         (format nil "Failed to login~%"))))
 
+;; temporary implementation
 (defroute ("/signup" :method :GET) ()
   (format nil "This method has not been implemented yet. Please contact an admitistrator of this service."))
-
-; (defroute ("/signup" :method :POST) ())
+; (defroute ("/signup" :method :POST) (&key _parsed))
 
 (defroute ("/signout" :method :GET) ()
   (setf (gethash :username *session*) nil)
