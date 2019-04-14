@@ -25,7 +25,21 @@
 ;; Routing rules
 
 (defroute "/" ()
-  (render #P"index.html"))
+  (if-login
+   *session*
+   (render #p"index.html")
+   (jump-to "/signin")))
+
+(defroute ("/signin" :method :GET) ()
+  (render #p"signin.html"))
+
+(defroute ("/signin" :method :POST) (&key _parsed)
+  )
+
+(defroute ("/signout" :method :GET) ()
+  (setf (gethash :username *session*) nil)
+  (format nil "SEE YOU...")
+  (jump-to "/" 1))
 
 ;;
 ;; Error pages
