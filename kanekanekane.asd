@@ -25,9 +25,10 @@
                 :components
                 ((:file "main" :depends-on ("config" "view" "db"))
                  (:file "web" :depends-on ("view" "web-utils" "user-control"))
-                 (:file "user-control" :depends-on ("db"))
+                 (:file "user-control" :depends-on ("db/users"))
                  (:file "web-utils" :depends-on ("view"))
                  (:file "view" :depends-on ("config"))
+                 (:file "db/users" :depends-on ("db"))
                  (:file "db" :depends-on ("config"))
                  (:file "config"))))
   :description ""

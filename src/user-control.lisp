@@ -2,10 +2,7 @@
 (defpackage kanekanekane.user-control
   (:use :cl
         :caveman2
-        :kanekanekane.config
-        :kanekanekane.db
-        :datafly
-        :sxql)
+        :kanekanekane.db.users)
   (:export :signin))
 (in-package :kanekanekane.user-control)
 
