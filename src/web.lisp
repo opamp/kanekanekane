@@ -46,6 +46,11 @@
           (jump-to "/"))
         (format nil "Failed to login~%"))))
 
+(defroute ("/signup" :method :GET) ()
+  (format nil "This method has not been implemented yet. Please contact an admitistrator of this service."))
+
+; (defroute ("/signup" :method :POST) ())
+
 (defroute ("/signout" :method :GET) ()
   (setf (gethash :username *session*) nil)
   (format nil "SEE YOU...")
