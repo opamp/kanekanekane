@@ -26,7 +26,7 @@
 
 (defroute "/" ()
   (if-login *session*
-            (render #p"index.html")
+            (render #p"top.html")
             (jump-to "/signin")))
 
 

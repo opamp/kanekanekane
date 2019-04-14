@@ -1,0 +1,23 @@
+{% extends "layouts/default-bootstrap.html" %}
+{% block title %}Kane-Kane-Kane for your money management{% endblock %}
+{% block head-additional-content %}
+<link href="/css/top.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<header>
+  <nav class="navbar navbar-dark bg-dark">
+    <button type="button" class="btn btn-outline-light px-3" id="add-new"> + </button>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="/signout">Sign out</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+<main role="main">
+  <div class="container-fluid">
+    <div class="mx-auto" id="range-selector">
+        <input type="date"> ~ <input type="date">
+    </div>
+</main>
+{% endblock %}
