@@ -5,6 +5,13 @@
         :kanekanekane.config
         :kanekanekane.db
         :datafly
-        :sxql))
+        :sxql)
+  (:export :get-user))
 (in-package :kanekanekane.db.users)
+
+(defun get-user (username)
+  (with-connection (db)
+    (retrive-one (select :*
+                         (from :users)
+                         (where (:= :username username))))))
 
