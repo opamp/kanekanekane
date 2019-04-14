@@ -34,7 +34,14 @@
   (render #p"signin.html"))
 
 (defroute ("/signin" :method :POST) (&key _parsed)
-  )
+  (let* ((userdata (cdr (assoc "user" _parsed :test #'string=)))
+         (name (cdr (assoc "name" userdata :test #'string=)))
+         (password (cdr (assoc "password" userdata :test #'string=))))
+    (if (kanekanekane.user-control:signin name password)
+        (progn
+          (setf (gethash :username *session*) name)
+          (jump-to "/"))
+        (format nil "Failed to login~%"))))
 
 (defroute ("/signout" :method :GET) ()
   (setf (gethash :username *session*) nil)
