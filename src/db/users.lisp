@@ -11,7 +11,7 @@
 
 (defun get-user (username)
   (with-connection (db)
-    (retrive-one (select :*
+    (retrieve-one (select :*
                          (from :users)
                          (where (:= :username username))))))
 

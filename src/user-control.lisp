@@ -12,7 +12,7 @@
     (ironclad:digest-sequence digester
                               (ironclad:ascii-string-to-byte-array password))))
 
-(defun singin (username password)
+(defun signin (username password)
   (let ((userinfo (get-user username))
         (hashed-password (byte-array-to-hex-string (hash-password password))))
     (unless (null userinfo)

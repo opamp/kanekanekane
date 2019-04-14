@@ -25,13 +25,16 @@
 ;; Routing rules
 
 (defroute "/" ()
-  (if-login
-   *session*
-   (render #p"index.html")
-   (jump-to "/signin")))
+  (if-login *session*
+            (render #p"index.html")
+            (jump-to "/signin")))
 
 (defroute ("/signin" :method :GET) ()
-  (render #p"signin.html"))
+  (if-login *session*
+            (progn
+              (format nil "You are already logged in.")
+              (jump-to "/" 2))
+            (render #p"signin.html")))
 
 (defroute ("/signin" :method :POST) (&key _parsed)
   (let* ((userdata (cdr (assoc "user" _parsed :test #'string=)))
