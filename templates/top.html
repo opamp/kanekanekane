@@ -2,6 +2,7 @@
 {% block title %}Kane-Kane-Kane for your money management{% endblock %}
 {% block head-additional-content %}
 <link href="/css/top.css" rel="stylesheet">
+<script type="text/javascript" src="/js/top.js"></script>
 {% endblock %}
 {% block content %}
 <header>
@@ -17,7 +18,7 @@
 <main role="main">
   <div class="container-fluid">
     <div class="mx-auto" id="range-selector">
-        <input type="date"> ~ <input type="date">
+        <!-- <input type="date" id="start-date"> ~ <input type="date" onchange="set_max_of_start();" id="end-date"> --!>
     </div>
 </main>
 {% endblock %}
