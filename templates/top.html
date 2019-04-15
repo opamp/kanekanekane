@@ -7,7 +7,7 @@
 {% block content %}
 <header>
   <nav class="navbar navbar-dark bg-dark">
-    <button type="button" class="btn btn-outline-light px-3" id="add-new"> + </button>
+    <button type="button" class="btn btn-outline-light px-3" data-toggle="modal" data-target="add-new-modal" onclick="$('#add-new-modal').modal('show');"> + </button>
     <ul class="navbar-nav px-3">
       <li class="nav-item text-nowrap">
         <a class="nav-link" href="/signout">Sign out</a>
@@ -15,10 +15,52 @@
     </ul>
   </nav>
 </header>
+<div class="modal fade" id="add-new-modal" tabindex="-1" role="dialog" aria-labelledby="add-new-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add-new-label">新しい項目</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="money-data-name" class="col-form-label">タイトル:</label>
+                        <input type="text" class="form-control" id="money-data-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="date-of-data" class="col-form-label">日付:</label>
+                        <input type="date" id="date-of-data" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="type-of-input" class="col-form-label">種類: </label>
+                        <select id="type-of-input" class="form-control">
+                          <option value="outlay">支出</option>
+                          <option value="income">収入</option>
+                        </select>
+                    </div>
+                    <div class=form-group>
+                        <label for="amount-of-money" class="col-form-label">金額:</label>
+                        <input type="number" id="amount-of-money" min="1" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="tags-input" class="col-form-label">タグ:</label>
+                        <input type="text" class="form-control" id="tags-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="comment-input" class="col-form-label">メモ（任意）:</label>
+                        <textarea class="form-control" id="comment-input"></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+    </div>
 <main role="main">
   <div class="container-fluid">
-    <div class="mx-auto" id="range-selector">
-        <!-- <input type="date" id="start-date"> ~ <input type="date" onchange="set_max_of_start();" id="end-date"> --!>
-    </div>
 </main>
 {% endblock %}
