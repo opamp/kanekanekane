@@ -25,9 +25,16 @@
 ;; Routing rules
 
 (defroute "/" ()
-  (if-login *session*
-            (render #p"top.html")
-            (jump-to "/signin")))
+  (if-login
+   *session*
+   (render #p"top.html")
+   (jump-to "/signin")))
+
+(defroute "/book/get/categories" ()
+  )
+
+(defroute ("/book/write" :method :POST) (&key _parsed)
+  )
 
 
 (defroute ("/signin" :method :GET) ()
