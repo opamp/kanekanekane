@@ -8,7 +8,8 @@
         :datafly
         :sxql)
   (:export :jump-to
-           :if-login))
+           :if-login
+           :json-post-return))
 (in-package :kanekanekane.web-utils)
 
 (defun jump-to (url &optional (jumptime 0))
@@ -20,3 +21,8 @@
   `(if (null (gethash :username ,session))
        ,login-false
        ,login-true))
+
+(defun json-post-return (code msg &optional body)
+  (list :code code
+        :message msg
+        :body body))

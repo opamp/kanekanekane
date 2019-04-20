@@ -14,9 +14,7 @@ CREATE TABLE IF NOT EXISTS categories (
 
 CREATE TABLE IF NOT EXISTS book (
        id bigserial primary key,
-       income boolean not null,
        title varchar(256) not null,
-       record_user varchar(32) not null references users(username),
        t_year smallint not null,
        t_month smallint not null,
        t_day smallint not null,

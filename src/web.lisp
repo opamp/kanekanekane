@@ -36,10 +36,25 @@
 (defroute ("/book/write" :method :POST) (&key _parsed)
   (if-login
    *session*
-   (progn
-     (format t "DATA: ~A~%~%" _parsed)
-     (render-json '(:MSG "OK")))
-   (format nil "error")))
+   (let ((name (cdr (assoc "name" _parsed :test #'string=)))
+         (date (cdr (assoc "date" _parsed :test #'string=)))
+         (incometype (cdr (assoc "incometype" _parsed :test #'string=)))
+         (amount (cdr (assoc "amount" _parsed :test #'string=)))
+         (category (cdr (assoc "category" _parsed :test #'string=)))
+         (comment (cdr (assoc "comment" _parsed :test #'string=)))
+         (username (gethash :username *session*)))
+     (multiple-value-bind (rtn msg)
+         (kanekanekane.book-control:write-new name
+                                              date
+                                              incometype
+                                              amount
+                                              category
+                                              comment
+                                              username)
+       (render-json (if rtn
+                        (json-post-return 0 "OK")
+                        (json-post-return 1 msg)))))
+   (throw-code 403)))
 
 
 (defroute ("/signin" :method :GET) ()
