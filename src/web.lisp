@@ -34,8 +34,8 @@
   (if-login
    *session*
    (let* ((username (gethash :username *session*))
-          (cate-data (get-all-categories (username))))
-     (format nil "cate data: ~%~S~%" cate-data))
+          (cate-data (get-categories-list username)))
+     (format nil cate-data))
    (throw-code 403)))
 
 (defroute ("/book/write" :method :POST) (&key _parsed)

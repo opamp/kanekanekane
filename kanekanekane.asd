@@ -25,9 +25,10 @@
   :components ((:module "src"
                 :components
                 ((:file "main" :depends-on ("config" "view" "db"))
-                 (:file "web" :depends-on ("view" "web-utils" "user-control" "book-control"))
+                 (:file "web" :depends-on ("view" "web-utils" "user-control" "book-control" "categories-control"))
                  (:file "user-control" :depends-on ("db/users"))
                  (:file "book-control" :depends-on ("db/book" "db/categories" "utils"))
+                 (:file "categories-control" :depends-on ("db/categories" "utils"))
                  (:file "web-utils" :depends-on ("view"))
                  (:file "view" :depends-on ("config"))
                  (:file "db/users" :depends-on ("db"))
