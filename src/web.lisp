@@ -30,7 +30,7 @@
    (render #p"top.html")
    (jump-to "/signin")))
 
-(defroute "/book/get/categories" ()
+(defroute "/category/get-all" ()
   (if-login
    *session*
    (let* ((username (gethash :username *session*))

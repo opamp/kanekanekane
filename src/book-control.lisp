@@ -42,9 +42,7 @@
 
 (defun prepare-income (income)
   (if (typep income 'boolean)
-      (cond
-        (income "true")
-        ((null income) "false"))
+      income
       (error 'invalid-input-value :valname "income" :msg "invalid type")))
 
 (defun prepare-amount (amount)
