@@ -34,7 +34,12 @@
   )
 
 (defroute ("/book/write" :method :POST) (&key _parsed)
-  )
+  (if-login
+   *session*
+   (progn
+     (format t "DATA: ~A~%~%" _parsed)
+     (render-json '(:MSG "OK")))
+   (format nil "error")))
 
 
 (defroute ("/signin" :method :GET) ()
