@@ -34,8 +34,9 @@
   (if-login
    *session*
    (let* ((username (gethash :username *session*))
-          (cate-data (get-categories-list username)))
-     (format nil cate-data))
+          (cate-data (kanekanekane.categories-control:get-categories-list username)))
+     (render-json (json-post-return 0 "OK" `((:income ,@(first cate-data))
+                                             (:outlay ,@(second cate-data))))))
    (throw-code 403)))
 
 (defroute ("/book/write" :method :POST) (&key _parsed)
