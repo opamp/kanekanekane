@@ -12,4 +12,4 @@
      (if it ,t-form ,nil-form)))
 
 (defun stringdate-to-lst (str)
-  (ppcre:split "-" str))
+  (mapcar #'parse-integer (ppcre:split "-" str)))

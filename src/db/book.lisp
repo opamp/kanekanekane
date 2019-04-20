@@ -9,7 +9,11 @@
   (:export create-new-item))
 (in-package :kanekanekane.db.book)
 
+(defun check-itm-value (title date-lst amount comment cate-id)
+  )
+
 (defun create-new-item (title date-lst amount comment cate-id)
+  ;"hogehoge" ("2019" "04" "20") "20000" "" 5
   (with-connection (db)
     (execute (insert-into :book
                           (set= :title title

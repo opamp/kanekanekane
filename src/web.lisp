@@ -52,7 +52,7 @@
                                               comment
                                               username)
        (render-json (if rtn
-                        (json-post-return 0 "OK")
+                        (json-post-return 0 msg)
                         (json-post-return 1 msg)))))
    (throw-code 403)))
 
