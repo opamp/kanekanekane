@@ -7,6 +7,11 @@ function setup_init_addmodal_date(){
     $("#date-of-data").attr("max",today_year + '-' + today_month + '-' + today_day);
 }
 
+function clear_addmodal_input(){
+    $("#add-input-form").get(0).reset();
+    setup_init_addmodal_date();
+}
+
 window.onload = function() {
     setup_init_addmodal_date();
 
@@ -44,13 +49,20 @@ window.onload = function() {
                 contentType: 'application/json',
                 dataType: "json",
                 success: function(jsondata){
-                    console.log("success pushing");
+                    if(jsondata.code == 0){
+                        console.log("No error reported.");
+                    }else{
+                        alert("不正な入力によりデータは記録されませんでした。\n入力内容をご確認ください。");
+                        console.log(jsondata);
+                    }
                 },
                 error: function(){
                     console.log("send error");
+                    alert("サーバーへのデータ送信時に問題が発生しました。\nページをリロードしてやりなおしてください。\n改善しない場合はサーバー管理者へお問い合わせください。");
                 },
                 complete: function(){
                     thisbutton.attr("disabled",false);
+                    clear_addmodal_input();
                 }
             });
         }else{
