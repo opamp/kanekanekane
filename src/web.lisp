@@ -31,7 +31,12 @@
    (jump-to "/signin")))
 
 (defroute "/book/get/categories" ()
-  )
+  (if-login
+   *session*
+   (let* ((username (gethash :username *session*))
+          (cate-data (get-all-categories (username))))
+     (format nil "cate data: ~%~S~%" cate-data))
+   (throw-code 403)))
 
 (defroute ("/book/write" :method :POST) (&key _parsed)
   (if-login

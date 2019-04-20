@@ -8,7 +8,8 @@
         :sxql)
   (:export :find-cate
            :create-new-cate
-           :create-new-cate-and-return))
+           :create-new-cate-and-return
+           :get-all-categories))
 (in-package :kanekanekane.db.categories)
 
 (defun find-cate (name incometype username)
@@ -42,3 +43,10 @@
 (defun create-new-cate-and-return (name incometype username)
   (create-new-cate name incometype username)
   (find-cate name incometype username))
+
+(defun get-all-categories (username)
+  (with-connection (db)
+    (retrieve-all
+     (select :*
+             (from :categories)
+             (where (:= :username username))))))
