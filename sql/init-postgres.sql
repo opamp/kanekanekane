@@ -5,10 +5,10 @@ CREATE TABLE IF NOT EXISTS users (
        created timestamp not null default CURRENT_TIMESTAMP);
 
 
-CREATE TABLE IF NOT EXISTS tags (
+CREATE TABLE IF NOT EXISTS categories (
        id serial primary key,
        income boolean not null,
-       tagname varchar(32) not null,
+       catename varchar(32) not null,
        username varchar(32) not null references users(username),
        parent_tag_id integer
 );
@@ -23,5 +23,5 @@ CREATE TABLE IF NOT EXISTS book (
        t_day smallint not null,
        val integer not null,
        comment text,
-       ltag_id integer not null references tags(id)
+       cate_id integer not null references categories(id)
 );
