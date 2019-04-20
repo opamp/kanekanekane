@@ -25,14 +25,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="add-input-form">
                     <div class="form-group">
                         <label for="money-data-name" class="col-form-label">タイトル:</label>
-                        <input type="text" class="form-control" id="money-data-name">
+                        <input type="text" class="form-control" id="money-data-name" required>
                     </div>
                     <div class="form-group">
                         <label for="date-of-data" class="col-form-label">日付:</label>
-                        <input type="date" id="date-of-data" class="form-control">
+                        <input type="date" id="date-of-data" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="type-of-input" class="col-form-label">種類: </label>
@@ -43,15 +43,16 @@
                     </div>
                     <div class=form-group>
                         <label for="amount-of-money" class="col-form-label">金額:</label>
-                        <input type="number" id="amount-of-money" min="1" class="form-control">
+                        <input type="number" id="amount-of-money" min="1" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="cate-input" class="col-form-label">カテゴリ:</label>
-                        <input type="text" class="form-control" id="cate-input">
+                        <input type="text" class="form-control" id="cate-input" required>
                     </div>
                     <div class="form-group">
                         <label for="comment-input" class="col-form-label">メモ（任意）:</label>
                         <textarea class="form-control" id="comment-input"></textarea>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
