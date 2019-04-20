@@ -1,3 +1,19 @@
+function update_allmodal_detalist(){
+    var datalisttype = $("#type-of-input").val();
+    $("#existingcates").empty();
+    $.getJSON("/category/get-all",function(data){
+        if(datalisttype == "outlay"){
+            $.each(data.body.outlay,function(index,val){
+                $("#existingcates").append('<option value="' + val + '">');
+            });
+        }else{
+            $.each(data.body.income,function(index,val){
+                $("#existingcates").append('<option value="' + val + '">');
+            });
+        }
+    });
+}
+
 function setup_init_addmodal_date(){
     var today = new Date();
     var today_year = today.getFullYear();
@@ -5,6 +21,7 @@ function setup_init_addmodal_date(){
     var today_day = ("0"+today.getDate()).slice(-2);
     $("#date-of-data").val(today_year + '-' + today_month + '-' + today_day);
     $("#date-of-data").attr("max",today_year + '-' + today_month + '-' + today_day);
+    update_allmodal_detalist();
 }
 
 function clear_addmodal_input(){
@@ -14,6 +31,10 @@ function clear_addmodal_input(){
 
 window.onload = function() {
     setup_init_addmodal_date();
+
+    $("#type-of-input").change(function(){
+        update_allmodal_detalist();
+    });
 
     $("button#add").click(function() {
         if($("#add-input-form").get(0).reportValidity() == true){
