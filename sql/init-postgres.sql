@@ -9,8 +9,7 @@ CREATE TABLE IF NOT EXISTS categories (
        id serial primary key,
        income boolean not null,
        catename varchar(32) not null,
-       username varchar(32) not null references users(username),
-       parent_tag_id integer
+       username varchar(32) not null references users(username)
 );
 
 CREATE TABLE IF NOT EXISTS book (
