@@ -44,10 +44,12 @@
         (when from-m-cond (setf where-lst (append where-lst (list from-m-cond))))
         (when from-d-cond (setf where-lst (append where-lst (list from-d-cond))))))
     (with-connection (db)
+      (format t "~A~%" where-lst)
       (if (= (length where-lst) 2)
           (retrieve-all (select :*
                                 (from :book)
-                                (inner-join :categories :on (:= :book.cate_id :categories.id))))
+                                (inner-join :categories :on (:= :book.cate_id :categories.id))
+                                (where (:= :username username))))
           (retrieve-all (select :*
                                 (from :book)
                                 (inner-join :categories :on (:= :book.cate_id :categories.id))
