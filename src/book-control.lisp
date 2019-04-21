@@ -6,7 +6,8 @@
         :kanekanekane.utils
         :kanekanekane.db.book
         :kanekanekane.db.categories)
-  (:export :write-new))
+  (:export :prepare-values
+           :write-new))
 (in-package :kanekanekane.book-control)
 
 (define-condition invalid-input-value (error)
@@ -70,25 +71,64 @@
         (error 'invalid-input-value :value "comment" :msg "invalid type"))))
 
 (defun prepare-values (name date income amount category comment)
-  (let ((name (prepare-name name))
-        (date (prepare-date date))
-        (income (prepare-income income))
-        (amount (prepare-amount amount))
-        (category (prepare-category category))
-        (comment (prepare-comment comment)))
-    (values name date income amount category comment)))
-
-(defun write-new (name date income amount category comment username)
-  (handler-case (multiple-value-bind (name date income amount category comment)
-                    (prepare-values name date income amount category comment)
-                  (let ((cat-data (aif (find-cate category income username)
-                                       it
-                                       (create-new-cate-and-return category income username))))
-                    (if (null cat-data)
-                        (error :absence-of-data :msg "category date could not get from DB")
-                        (progn (create-new-item name date amount comment (getf cat-data :id))
-                               (values t "OK")))))
+  (handler-case
+      (let ((name (prepare-name name))
+            (date (prepare-date date))
+            (income (prepare-income income))
+            (amount (prepare-amount amount))
+            (category (prepare-category category))
+            (comment (prepare-comment comment)))
+        (values `(:name
+                  ,name
+                  :date
+                  ,date
+                  :income
+                  ,income
+                  :amount
+                  ,amount
+                  :category
+                  ,category
+                  :comment
+                  ,comment)
+                "OK"))
     (invalid-input-value (e) (values nil (msg-of e)))
     (absence-of-data (e) (values nil (msg-of e)))
     (error () (values nil "critical error"))))
+
+(defun write-new (name date income amount category comment username)
+  (let ((cat-data (aif (find-cate category income username)
+                       it
+                       (create-new-cate-and-return category income username))))
+    (when cat-data
+      (create-new-item name date amount comment (getf cat-data :id))
+      t)))
+
+;; (defun write-new (name date income amount category comment username)
+;;   (handler-case (multiple-value-bind (name date income amount category comment)
+;;                     (prepare-values name date income amount category comment)
+;;                   (let ((cat-data (aif (find-cate category income username)
+;;                                        it
+;;                                        (create-new-cate-and-return category income username))))
+;;                     (if (null cat-data)
+;;                         (error :absence-of-data :msg "category date could not get from DB")
+;;                         (progn (create-new-item name date amount comment (getf cat-data :id))
+;;                                (values t
+;;                                        "OK"
+;;                                        `(:title
+;;                                          ,name
+;;                                          :t_year
+;;                                          ,(first date)
+;;                                          :t_month
+;;                                          ,(second date)
+;;                                          :t_day
+;;                                          ,(third date)
+;;                                          :val
+;;                                          ,amount
+;;                                          :comment
+;;                                          ,comment
+;;                                          :cate-id
+;;                                          ,(getf cat-data :id)))))))
+;;     (invalid-input-value (e) (values nil (msg-of e) nil))
+;;     (absence-of-data (e) (values nil (msg-of e) nil))
+;;     (error () (values nil "critical error"))))
 

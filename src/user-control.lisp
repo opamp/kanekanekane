@@ -5,7 +5,8 @@
         :ironclad
         :kanekanekane.db.users)
   (:export :signin
-           :get-userdata))
+           :get-userdata
+           :add-balance))
 (in-package :kanekanekane.user-control)
 
 (defun hash-password (password)
@@ -28,3 +29,6 @@
       ,(getf userinfo :basepoint)
       :balance
       ,(getf userinfo :balance))))
+
+(defun add-balance (username incometype balance)
+)

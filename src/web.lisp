@@ -65,16 +65,23 @@
          (comment (cdr (assoc "comment" _parsed :test #'string=)))
          (username (gethash :username *session*)))
      (multiple-value-bind (rtn msg)
-         (kanekanekane.book-control:write-new name
-                                              date
-                                              incometype
-                                              amount
-                                              category
-                                              comment
-                                              username)
-       (render-json (if rtn
-                        (json-post-return 0 msg)
-                        (json-post-return 1 msg)))))
+         (kanekanekane.book-control:prepare-values name
+                                                   date
+                                                   incometype
+                                                   amount
+                                                   category
+                                                   comment)
+       (if rtn
+           (if (kanekanekane.book-control:write-new (getf rtn :name)
+                                                    (getf rtn :date)
+                                                    (getf rtn :income)
+                                                    (getf rtn :amount)
+                                                    (getf rtn :category)
+                                                    (getf rtn :comment)
+                                                    username)
+               (render-json (json-post-return 0 "OK"))
+               (render-json (json-post-return 2 "Failed to write DB")))
+           (render-json (json-post-return 1 msg)))))
    (throw-code 403)))
 
 
