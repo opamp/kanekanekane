@@ -22,7 +22,7 @@
                                 :cate_id cate-id)))))
 
 (defun read-items (from to username)
-  (let ((where-lst '(:and)))
+  (let ((where-lst `(:and (:= :username ,username))))
     (when from
       (let* ((year (first from))
              (month (second from))
@@ -44,7 +44,7 @@
         (when from-m-cond (setf where-lst (append where-lst (list from-m-cond))))
         (when from-d-cond (setf where-lst (append where-lst (list from-d-cond))))))
     (with-connection (db)
-      (if (= (length where-lst) 1)
+      (if (= (length where-lst) 2)
           (retrieve-all (select :*
                                 (from :book)
                                 (inner-join :categories :on (:= :book.cate_id :categories.id))))
