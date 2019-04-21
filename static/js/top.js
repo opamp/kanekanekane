@@ -56,7 +56,9 @@ window.onload = function() {
     });
 
     $("#basepoint-setting").change(function(){
-        
+        var value = $(this).val();
+        $.get("/user/update/basepoint/simple/" + value);
+        update_userwelcome_board();
     });
 
     $("button#add").click(function() {
