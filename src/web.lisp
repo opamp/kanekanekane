@@ -45,6 +45,18 @@
                                     (kanekanekane.user-control:get-userdata username))))
    (throw-code 403)))
 
+(defroute "/user/update-basepoint/:val" (&key val)
+  (if-login
+   *session*
+   (let ((username (gethash :username *session*))
+         (day (kanekanekane.user-control:prepare-basepoint val)))
+     (if day
+         (progn
+           (kanekanekane.user-control:change-basepoint day username)
+           (format nil "update"))
+         (format nil "failed to update")))
+   (throw-code 403)))
+
 (defroute "/category/get-all" ()
   (if-login
    *session*

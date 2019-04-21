@@ -55,6 +55,10 @@ window.onload = function() {
         update_allmodal_detalist();
     });
 
+    $("#basepoint-setting").change(function(){
+        
+    });
+
     $("button#add").click(function() {
         if($("#add-input-form").get(0).reportValidity() == true){
             // disable button when sending data

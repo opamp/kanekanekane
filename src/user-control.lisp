@@ -6,7 +6,9 @@
         :kanekanekane.db.users)
   (:export :signin
            :get-userdata
-           :add-balance))
+           :add-balance
+           :prepare-basepoint
+           :change-basepoint))
 (in-package :kanekanekane.user-control)
 
 (defun hash-password (password)
@@ -39,3 +41,14 @@
                                 (- amount)))))
         (update-balance username new-balance)
         t))))
+
+(defun prepare-basepoint (day)
+  (let ((day (handler-case (parse-integer day)
+               (error () nil))))
+    (when (and day
+               (>= day 1)
+               (<= day 31))
+      day)))
+
+(defun change-basepoint (day username)
+  (update-basepoint username day))
