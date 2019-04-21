@@ -103,3 +103,10 @@
       (create-new-item name date amount comment (getf cat-data :id))
       t)))
 
+(defun read-data (from to username)
+  (let ((from (prepare-date from))
+        (to (prepare-date to))
+        (income-data outlay-data))
+    (dolist (itm (read-items from to username))
+      
+      )))
