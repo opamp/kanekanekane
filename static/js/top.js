@@ -1,7 +1,7 @@
 function update_allmodal_detalist(){
     var datalisttype = $("#type-of-input").val();
     $("#existingcates").empty();
-    $.getJSON("/category/get-all",function(data){
+    $.getJSON("/category/get/all",function(data){
         if(datalisttype == "outlay"){
             $.each(data.body.outlay,function(index,val){
                 $("#existingcates").append('<option value="' + val + '">');
@@ -31,7 +31,7 @@ function clear_addmodal_input(){
 
 function update_userwelcome_board(){
    //settings load from server DB.
-    $.getJSON("/user/get-data",function(data){
+    $.getJSON("/user/get/userdata",function(data){
         $("#user-welcome").text("ようこそ、"+data.body.username+"さん");
         $("#basepoint-setting").val(data.body.basepoint);
         $("#current-balance").text(data.body.balance);

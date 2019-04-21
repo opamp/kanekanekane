@@ -63,7 +63,7 @@
   (format nil "SEE YOU...")
   (jump-to "/" 1))
 
-(defroute "/user/get-data" ()
+(defroute "/user/get/userdata" ()
   (if-login
    *session*
    (let ((username (gethash :username *session*)))
@@ -72,7 +72,7 @@
                                     (kanekanekane.user-control:get-userdata username))))
    (throw-code 403)))
 
-(defroute "/user/update-basepoint/:val" (&key val)
+(defroute "/user/update/basepoint/simple/:val" (&key val)
   (if-login
    *session*
    (let ((username (gethash :username *session*))
@@ -84,7 +84,7 @@
          (format nil "failed to update")))
    (throw-code 403)))
 
-(defroute "/category/get-all" ()
+(defroute "/category/get/all" ()
   (if-login
    *session*
    (let* ((username (gethash :username *session*))
