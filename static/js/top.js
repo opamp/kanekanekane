@@ -36,6 +36,11 @@ function update_userwelcome_board(){
         $("#basepoint-setting").val(data.body.basepoint);
         $("#current-balance").text(data.body.balance);
     });
+
+    $.getJSON("/book/read/most-recent-data",function(data){
+        $("#income-recent-month").text(data.body.income);
+        $("#outlay-recent-month").text(data.body.outlay);
+    });
 }
 
 function setup_userwelcome_board(){
