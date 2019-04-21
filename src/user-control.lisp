@@ -4,7 +4,8 @@
         :caveman2
         :ironclad
         :kanekanekane.db.users)
-  (:export :signin))
+  (:export :signin
+           :get-userdata))
 (in-package :kanekanekane.user-control)
 
 (defun hash-password (password)
@@ -18,3 +19,12 @@
     (unless (null userinfo)
       (equal (getf userinfo :PASSWORD)
              hashed-password))))
+
+(defun get-userdata (username)
+  (let ((userinfo (get-user username)))
+    `(:username
+      ,(getf userinfo :username)
+      :basepoint
+      ,(getf userinfo :basepoint)
+      :balance
+      ,(getf userinfo :balance))))

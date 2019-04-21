@@ -36,6 +36,15 @@
    (render #p"review.html")
    (jump-to "/signin")))
 
+(defroute "/user/get-data" ()
+  (if-login
+   *session*
+   (let ((username (gethash :username *session*)))
+     (render-json (json-post-return 0
+                                    "OK"
+                                    (kanekanekane.user-control:get-userdata username))))
+   (throw-code 403)))
+
 (defroute "/category/get-all" ()
   (if-login
    *session*

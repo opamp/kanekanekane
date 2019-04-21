@@ -3,6 +3,7 @@
 {% block head-additional-content %}
 <link href="/css/top.css" rel="stylesheet">
 <script type="text/javascript" src="/js/top.js"></script>
+<script type="text/javascript" src="/js/lib/plotly-latest.min.js"></script>
 {% endblock %}
 {% block content %}
 <header>
@@ -65,6 +66,40 @@
 </div>
 <main role="main">
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 m-0 p-4">
+                <div class="card border-dark"
+                    <div class="card-body">
+                        <h4 class="text-center" id="user-welcome">ようこそ</h4>
+                        <p class="text-center">毎月
+                            <select id="basepoint-setting" name="basepoint">
+                            </select>
+                            日からの集計を表示</p>
+                        <div class="mx-4">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">今月収入</th>
+                                        <td id="income-this-month">0</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">今月支出</th>
+                                        <td id="outlay-this-month">0</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">現在残高</th>
+                                        <td id="current-balance">0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="background-color: #F00;">
+                    piyo
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 {% endblock %}

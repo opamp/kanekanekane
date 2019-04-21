@@ -29,8 +29,23 @@ function clear_addmodal_input(){
     setup_init_addmodal_date();
 }
 
+function setup_userwelcome_board(){
+    //preparation of select options
+    for(var d = 1;d <= 31;d++){
+        $("#basepoint-setting").append('<option value="' + d + '">' + d + "</option>");
+    }
+
+    //settings load from server DB.
+    $.getJSON("/user/get-data",function(data){
+        $("#user-welcome").text("ようこそ、"+data.body.username+"さん");
+        $("#basepoint-setting").val(data.body.basepoint);
+        $("#current-balance").text(data.body.balance);
+    });
+}
+
 window.onload = function() {
     setup_init_addmodal_date();
+    setup_userwelcome_board();
 
     $("#type-of-input").change(function(){
         update_allmodal_detalist();
