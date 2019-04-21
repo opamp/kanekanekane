@@ -29,18 +29,22 @@ function clear_addmodal_input(){
     setup_init_addmodal_date();
 }
 
+function update_userwelcome_board(){
+   //settings load from server DB.
+    $.getJSON("/user/get-data",function(data){
+        $("#user-welcome").text("ようこそ、"+data.body.username+"さん");
+        $("#basepoint-setting").val(data.body.basepoint);
+        $("#current-balance").text(data.body.balance);
+    });
+}
+
 function setup_userwelcome_board(){
     //preparation of select options
     for(var d = 1;d <= 31;d++){
         $("#basepoint-setting").append('<option value="' + d + '">' + d + "</option>");
     }
 
-    //settings load from server DB.
-    $.getJSON("/user/get-data",function(data){
-        $("#user-welcome").text("ようこそ、"+data.body.username+"さん");
-        $("#basepoint-setting").val(data.body.basepoint);
-        $("#current-balance").text(data.body.balance);
-    });
+    update_userwelcome_board();
 }
 
 window.onload = function() {
@@ -99,6 +103,7 @@ window.onload = function() {
                 complete: function(){
                     thisbutton.attr("disabled",false);
                     clear_addmodal_input();
+                    update_userwelcome_board();
                 }
             });
         }else{
