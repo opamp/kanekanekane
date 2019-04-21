@@ -30,5 +30,12 @@
       :balance
       ,(getf userinfo :balance))))
 
-(defun add-balance (username incometype balance)
-)
+(defun add-balance (incometype amount username)
+  (let ((userinfo (get-userdata username)))
+    (when userinfo
+      (let ((new-balance (+ (getf userinfo :balance)
+                            (if incometype
+                                amount
+                                (- amount)))))
+        (update-balance username new-balance)
+        t))))

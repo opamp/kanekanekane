@@ -102,33 +102,3 @@
     (when cat-data
       (create-new-item name date amount comment (getf cat-data :id))
       t)))
-
-;; (defun write-new (name date income amount category comment username)
-;;   (handler-case (multiple-value-bind (name date income amount category comment)
-;;                     (prepare-values name date income amount category comment)
-;;                   (let ((cat-data (aif (find-cate category income username)
-;;                                        it
-;;                                        (create-new-cate-and-return category income username))))
-;;                     (if (null cat-data)
-;;                         (error :absence-of-data :msg "category date could not get from DB")
-;;                         (progn (create-new-item name date amount comment (getf cat-data :id))
-;;                                (values t
-;;                                        "OK"
-;;                                        `(:title
-;;                                          ,name
-;;                                          :t_year
-;;                                          ,(first date)
-;;                                          :t_month
-;;                                          ,(second date)
-;;                                          :t_day
-;;                                          ,(third date)
-;;                                          :val
-;;                                          ,amount
-;;                                          :comment
-;;                                          ,comment
-;;                                          :cate-id
-;;                                          ,(getf cat-data :id)))))))
-;;     (invalid-input-value (e) (values nil (msg-of e) nil))
-;;     (absence-of-data (e) (values nil (msg-of e) nil))
-;;     (error () (values nil "critical error"))))
-
