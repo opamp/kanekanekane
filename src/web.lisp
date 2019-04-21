@@ -125,9 +125,11 @@
            (render-json (json-post-return 1 msg)))))
    (throw-code 403)))
 
-(defroute ("/boot/read" :method :POST) (&key _parsed)
+(defroute ("/book/read" :method :POST) (&key _parsed)
   (format nil "not implemented"))
 
+(defroute "/book/read/most-resent" ()
+  )
 
 ;;
 ;; Error pages

@@ -17,14 +17,14 @@
                               (ironclad:ascii-string-to-byte-array password))))
 
 (defun signin (username password)
-  (let ((userinfo (get-user username))
+  (let ((userinfo (select-user-with-username username))
         (hashed-password (byte-array-to-hex-string (hash-password password))))
     (unless (null userinfo)
       (equal (getf userinfo :PASSWORD)
              hashed-password))))
 
 (defun get-userdata (username)
-  (let ((userinfo (get-user username)))
+  (let ((userinfo (select-user-with-username username)))
     `(:username
       ,(getf userinfo :username)
       :basepoint
@@ -39,7 +39,7 @@
                             (if incometype
                                 amount
                                 (- amount)))))
-        (update-balance username new-balance)
+        (update-balance-with-username username new-balance)
         t))))
 
 (defun prepare-basepoint (day)
@@ -51,4 +51,4 @@
       day)))
 
 (defun change-basepoint (day username)
-  (update-basepoint username day))
+  (update-basepoint-with-username username day))

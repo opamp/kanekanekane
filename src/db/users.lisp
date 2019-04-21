@@ -6,31 +6,31 @@
         :kanekanekane.db
         :datafly
         :sxql)
-  (:export :get-user
-           :update-password
-           :update-balance
-           :update-basepoint))
+  (:export :select-user-with-username
+           :update-password-with-username
+           :update-balance-with-username
+           :update-basepoint-with-username))
 (in-package :kanekanekane.db.users)
 
-(defun get-user (username)
+(defun select-user-with-username (username)
   (with-connection (db)
     (retrieve-one (select :*
                          (from :users)
                          (where (:= :username username))))))
 
-(defun update-password (username password)
+(defun update-password-with-username (username password)
   (with-connection (db)
     (execute (update :users
                      (set= :password password)
                      (where (:= :username username))))))
 
-(defun update-balance (username balance)
+(defun update-balance-with-username (username balance)
   (with-connection (db)
     (execute (update :users
                      (set= :balance balance)
                      (where (:= :username username))))))
 
-(defun update-basepoint (username basepoint)
+(defun update-basepoint-with-username (username basepoint)
   (with-connection (db)
     (execute (update :users
                      (set= :basepoint basepoint)
