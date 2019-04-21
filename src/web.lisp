@@ -36,6 +36,33 @@
    (render #p"review.html")
    (jump-to "/signin")))
 
+(defroute ("/signin" :method :GET) ()
+  (if-login *session*
+            (progn
+              (format nil "You are already logged in.")
+              (jump-to "/" 2))
+            (render #p"signin.html")))
+
+(defroute ("/signin" :method :POST) (&key _parsed)
+  (let* ((userdata (cdr (assoc "user" _parsed :test #'string=)))
+         (name (cdr (assoc "name" userdata :test #'string=)))
+         (password (cdr (assoc "password" userdata :test #'string=))))
+    (if (kanekanekane.user-control:signin name password)
+        (progn
+          (setf (gethash :username *session*) name)
+          (jump-to "/"))
+        (format nil "Failed to login~%"))))
+
+;; temporary implementation
+(defroute ("/signup" :method :GET) ()
+  (format nil "This method has not been implemented yet. Please contact an admitistrator of this service."))
+; (defroute ("/signup" :method :POST) (&key _parsed))
+
+(defroute ("/signout" :method :GET) ()
+  (setf (gethash :username *session*) nil)
+  (format nil "SEE YOU...")
+  (jump-to "/" 1))
+
 (defroute "/user/get-data" ()
   (if-login
    *session*
@@ -98,33 +125,9 @@
            (render-json (json-post-return 1 msg)))))
    (throw-code 403)))
 
+(defroute ("/boot/read" :method :POST) (&key _parsed)
+  (format nil "not implemented"))
 
-(defroute ("/signin" :method :GET) ()
-  (if-login *session*
-            (progn
-              (format nil "You are already logged in.")
-              (jump-to "/" 2))
-            (render #p"signin.html")))
-
-(defroute ("/signin" :method :POST) (&key _parsed)
-  (let* ((userdata (cdr (assoc "user" _parsed :test #'string=)))
-         (name (cdr (assoc "name" userdata :test #'string=)))
-         (password (cdr (assoc "password" userdata :test #'string=))))
-    (if (kanekanekane.user-control:signin name password)
-        (progn
-          (setf (gethash :username *session*) name)
-          (jump-to "/"))
-        (format nil "Failed to login~%"))))
-
-;; temporary implementation
-(defroute ("/signup" :method :GET) ()
-  (format nil "This method has not been implemented yet. Please contact an admitistrator of this service."))
-; (defroute ("/signup" :method :POST) (&key _parsed))
-
-(defroute ("/signout" :method :GET) ()
-  (setf (gethash :username *session*) nil)
-  (format nil "SEE YOU...")
-  (jump-to "/" 1))
 
 ;;
 ;; Error pages

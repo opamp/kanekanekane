@@ -102,3 +102,4 @@
     (when cat-data
       (create-new-item name date amount comment (getf cat-data :id))
       t)))
+
