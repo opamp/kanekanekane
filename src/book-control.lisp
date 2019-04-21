@@ -4,6 +4,7 @@
         :caveman2
         :ironclad
         :kanekanekane.utils
+        :kanekanekane.db.users
         :kanekanekane.db.book
         :kanekanekane.db.categories)
   (:export :prepare-values
@@ -114,3 +115,30 @@
           (setf income-data (append income-data (list itm)))
           (setf outlay-data (append outlay-data (list itm)))))
     (values income-data outlay-data)))
+
+(defun make-basepoint-date (basepoint-day)
+  (let* ((today (today-list))
+         (basepoint-year (if (<= basepoint-day (third today))
+                             (first today)
+                             (if (= (second today) 1)
+                                 (- (first today) 1)
+                                 (first today))))
+         (basepoint-month (if (<= basepoint-day (third today))
+                              (second today)
+                              (if (= (second today) 1)
+                                  12
+                                  (- (second today) 1))))
+         (basepoint-date (list basepoint-year basepoint-month basepoint-day)))
+    (if (date-exist-p basepoint-year basepoint-month basepoint-day)
+        basepoint-date
+        (labels ((new-basepoint-day (current-day)
+                   (if (date-exist-p basepoint-year basepoint-month current-day)
+                       (list basepoint-year basepoint-month current-day)
+                       (new-basepoint-day (- current-day 1)))))
+          (new-basepoint-day (- basepoint-day 1))))))
+
+(defun read-data-from-basepoint (username)
+  (let ((userinfo (select-user-with-username username)))
+    (read-data (listdate-to-string (make-basepoint-date (getf userinfo :basepoint)))
+               (listdate-to-string (today-list))
+               username)))

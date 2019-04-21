@@ -26,7 +26,6 @@
     (when to
       (setf where-lst (append where-lst `((:<= :record_date ,to)))))
     (with-connection (db)
-      (format t "~A~%" where-lst)
       (if (= (length where-lst) 2)
           (retrieve-all (select :*
                                 (from :book)
