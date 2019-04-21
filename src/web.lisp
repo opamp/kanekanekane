@@ -30,6 +30,12 @@
    (render #p"top.html")
    (jump-to "/signin")))
 
+(defroute "/review" ()
+  (if-login
+   *session*
+   (render #p"review.html")
+   (jump-to "/signin")))
+
 (defroute "/category/get-all" ()
   (if-login
    *session*
