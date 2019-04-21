@@ -7,7 +7,8 @@
         :kanekanekane.db.book
         :kanekanekane.db.categories)
   (:export :prepare-values
-           :write-new))
+           :write-new
+           :read-data))
 (in-package :kanekanekane.book-control)
 
 (define-condition invalid-input-value (error)
@@ -26,6 +27,9 @@
     (t name)))
 
 (defun prepare-date (date)
+  date)
+
+(defun prepare-date-old (date)
   (let ((date (handler-case (stringdate-to-lst date)
                 (error () nil))))
     (cond
@@ -103,10 +107,12 @@
       (create-new-item name date amount comment (getf cat-data :id))
       t)))
 
-(defun read-data (from to username)
-  (let ((from (prepare-date from))
-        (to (prepare-date to))
-        (income-data outlay-data))
-    (dolist (itm (read-items from to username))
-      
-      )))
+;; (defun read-data (from to username)
+;;   (let ((from (if from (prepare-date from) nil))
+;;         (to (if to (prepare-date to) nil))
+;;         income-data outlay-data)
+;;     (dolist (itm (read-items from to username))
+;;       (if (getf itm :income)
+;;           (setf income-data (append income-data (list itm)))
+;;           (setf outlay-data (append outlay-data (list itm)))))
+;;     (values income-data outlay-data)))

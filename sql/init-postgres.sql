@@ -16,9 +16,7 @@ CREATE TABLE IF NOT EXISTS categories (
 CREATE TABLE IF NOT EXISTS book (
        id bigserial primary key,
        title varchar(256) not null,
-       t_year smallint not null,
-       t_month smallint not null,
-       t_day smallint not null,
+       record_date date not null,
        val integer not null,
        comment text,
        cate_id integer not null references categories(id)
