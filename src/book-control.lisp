@@ -9,7 +9,8 @@
         :kanekanekane.db.categories)
   (:export :prepare-values
            :write-new
-           :read-data))
+           :read-data
+           :read-and-simplified-data-from-basepoint))
 (in-package :kanekanekane.book-control)
 
 (define-condition invalid-input-value (error)
@@ -142,3 +143,14 @@
     (read-data (listdate-to-string (make-basepoint-date (getf userinfo :basepoint)))
                (listdate-to-string (today-list))
                username)))
+
+(defun read-and-simplified-data-from-basepoint (username)
+  (multiple-value-bind (income-data outlay-data)
+      (read-data-from-basepoint username)
+    (let ((income 0)
+          (outlay 0))
+      (dolist (income-elem income-data)
+        (setf income (+ income (getf income-elem :val))))
+      (dolist (outlay-elem outlay-data)
+        (setf outlay (+ outlay (getf outlay-elem :val))))
+      (values income outlay))))
