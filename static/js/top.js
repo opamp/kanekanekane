@@ -37,9 +37,9 @@ function update_userwelcome_board(){
         $("#current-balance").text(data.body.balance);
     });
 
-    $.getJSON("/book/read/most-recent-data",function(data){
-        $("#income-recent-month").text(data.body.income);
-        $("#outlay-recent-month").text(data.body.outlay);
+    $.getJSON("/book/read/simple-summary-data",function(data){
+        $("#income-recent-month").text(data.body.incomeall);
+        $("#outlay-recent-month").text(data.body.outlayall);
     });
 }
 

@@ -128,13 +128,26 @@
 (defroute ("/book/read" :method :POST) (&key _parsed)
   (format nil "not implemented"))
 
-(defroute "/book/read/most-recent-data" ()
+;; (defroute "/book/read/most-recent-data" ()
+;;   (if-login
+;;    *session*
+;;    (let ((username (gethash :username *session*)))
+;;      (multiple-value-bind (income outlay)
+;;          (kanekanekane.book-control:read-and-simplified-data-from-basepoint username)
+;;        (render-json (json-post-return 0 "OK" `(:income ,income :outlay ,outlay)))))
+;;    (throw-code 403)))
+
+(defroute "/book/read/simple-summary-data" ()
   (if-login
    *session*
    (let ((username (gethash :username *session*)))
-     (multiple-value-bind (income outlay)
+     (multiple-value-bind (income income-breakdown outlay outlay-breakdown)
          (kanekanekane.book-control:read-and-simplified-data-from-basepoint username)
-       (render-json (json-post-return 0 "OK" `(:income ,income :outlay ,outlay)))))
+       (format t "out -> ~S ~S~%" income-breakdown outlay-breakdown)
+       (render-json (json-post-return 0 "OK" `(:incomeall ,income
+                                               :outlayall ,outlay
+                                               :incomebreakdown ,income-breakdown
+                                               :outlaybreakdown ,outlay-breakdown)))))
    (throw-code 403)))
 
 ;;
