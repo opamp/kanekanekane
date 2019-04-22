@@ -144,17 +144,6 @@
                (listdate-to-string (today-list))
                username)))
 
-;; (defun read-and-simplified-data-from-basepoint (username)
-;;   (multiple-value-bind (income-data outlay-data)
-;;       (read-data-from-basepoint username)
-;;     (let ((income 0)
-;;           (outlay 0))
-;;       (dolist (income-elem income-data)
-;;         (setf income (+ income (getf income-elem :val))))
-;;       (dolist (outlay-elem outlay-data)
-;;         (setf outlay (+ outlay (getf outlay-elem :val))))
-;;       (values income outlay))))
-
 (defun read-and-simplified-data-from-basepoint (username)
   (multiple-value-bind (income-data outlay-data)
       (read-data-from-basepoint username)

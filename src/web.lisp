@@ -128,15 +128,6 @@
 (defroute ("/book/read" :method :POST) (&key _parsed)
   (format nil "not implemented"))
 
-;; (defroute "/book/read/most-recent-data" ()
-;;   (if-login
-;;    *session*
-;;    (let ((username (gethash :username *session*)))
-;;      (multiple-value-bind (income outlay)
-;;          (kanekanekane.book-control:read-and-simplified-data-from-basepoint username)
-;;        (render-json (json-post-return 0 "OK" `(:income ,income :outlay ,outlay)))))
-;;    (throw-code 403)))
-
 (defroute "/book/read/simple-summary-data" ()
   (if-login
    *session*
