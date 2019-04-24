@@ -134,7 +134,6 @@
    (let ((username (gethash :username *session*)))
      (multiple-value-bind (income income-breakdown outlay outlay-breakdown)
          (kanekanekane.book-control:read-and-simplified-data-from-basepoint username)
-       (format t "out -> ~S ~S~%" income-breakdown outlay-breakdown)
        (render-json (json-post-return 0 "OK" `(:incomeall ,income
                                                :outlayall ,outlay
                                                :incomebreakdown ,income-breakdown

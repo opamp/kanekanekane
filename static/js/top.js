@@ -29,7 +29,7 @@ function clear_addmodal_input(){
     setup_init_addmodal_date();
 }
 
-function update_userwelcome_board(){
+function update_user_data(){
    //settings load from server DB.
     $.getJSON("/user/get/userdata",function(data){
         $("#user-welcome").text("ようこそ、"+data.body.username+"さん");
@@ -49,7 +49,7 @@ function setup_userwelcome_board(){
         $("#basepoint-setting").append('<option value="' + d + '">' + d + "</option>");
     }
 
-    update_userwelcome_board();
+    update_user_data();
 }
 
 window.onload = function() {
@@ -63,7 +63,7 @@ window.onload = function() {
     $("#basepoint-setting").change(function(){
         var value = $(this).val();
         $.get("/user/update/basepoint/simple/" + value);
-        update_userwelcome_board();
+        update_user_data();
     });
 
     $("button#add").click(function() {
@@ -114,7 +114,7 @@ window.onload = function() {
                 complete: function(){
                     thisbutton.attr("disabled",false);
                     clear_addmodal_input();
-                    update_userwelcome_board();
+                    update_user_data();
                 }
             });
         }else{
