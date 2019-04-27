@@ -95,7 +95,7 @@ function update_user_data(){
                 labels: income_pie_data.labels,
                 type: 'pie'
             }];
-            Plotly.newPlot('income-pie-graph',income_pie,{title: "収入内訳",font: {size: 21}});
+            Plotly.newPlot('income-pie-graph',income_pie,{title: "収入内訳",font: {size: 18}});
         }else{
             $("#income-pie-graph").append('<p class="text-center">データがありません</p>');
         }
@@ -105,7 +105,7 @@ function update_user_data(){
                 labels: outlay_pie_data.labels,
                 type: 'pie'
             }];
-            Plotly.newPlot('outlay-pie-graph',outlay_pie,{title: "支出内訳",font: {size: 21}});
+            Plotly.newPlot('outlay-pie-graph',outlay_pie,{title: "支出内訳",font: {size: 18}});
         }else{
             $("#outlay-pie-graph").append('<p class="text-center">データがありません</p>');
         }
@@ -142,7 +142,7 @@ function update_user_data(){
                        daily_graph_income_data,
                        {
                            barmode: "group",
-                           font: {size: 21},
+                           font: {size: 18},
                            xaxis: {dtick: 24*60*60*1000},
                            yaxis: {title: "合計出費"},
                        });
@@ -150,7 +150,7 @@ function update_user_data(){
                        daily_graph_outlay_data,
                        {
                            barmode: "group",
-                           font: {size: 21},
+                           font: {size: 18},
                            xaxis: {dtick: 24*60*60*1000},
                            yaxis: {title: "合計出費"}
                        });
