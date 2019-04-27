@@ -47,14 +47,18 @@ function update_user_data(){
         $("#outlay-recent-month").text(data.body.outlayall);
         $("#sum-of-month").text(data.body.incomeall - data.body.outlayall);
 
+        var total_of_date = function(d,dt){
+            var all_income = d.filter(itm => {return itm.incometype == true && itm.recordDate == dt;});
+            var all_outlay = d.filter(itm => {return itm.incometype != true && itm.recordDate == dt;});
+            var total_income = all_income.reduce((acc,x) => acc + x.val,0);
+            var total_outlay = all_outlay.reduce((acc,x) => acc + x.val,0);
+            return {income: total_income, outlay: total_outlay};
+        };
         var today = iso8601string(new Date());
-        var today_income = data.body.data.filter(itm => {return itm.incometype == true && itm.recordDate == today;});
-        var today_outlay = data.body.data.filter(itm => {return itm.incometype != true && itm.recordDate == today;});
-        var today_income_val = today_income.reduce((acc,x) => acc + x.val,0);
-        var today_outlay_val = today_outlay.reduce((acc,x) => acc + x.val,0);
-        $("#income-today").text(today_income_val);
-        $("#outlay-today").text(today_outlay_val);
-        $("#sum-of-today").text(today_income_val - today_outlay_val);
+        var today_total = total_of_date(data.body.data,today);
+        $("#income-today").text(today_total.income);
+        $("#outlay-today").text(today_total.outlay);
+        $("#sum-of-today").text(today_total.income - today_total.outlay);
 
         $('#recent-data-tbody').empty();
         data.body.data.forEach(function(itm){
@@ -106,6 +110,8 @@ function update_user_data(){
         }else{
             $("#outlay-pie-graph").append('<p class="text-center">データがありません</p>');
         }
+
+        
     });
 }
 
