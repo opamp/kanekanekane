@@ -45,6 +45,7 @@ function update_user_data(){
     $.getJSON("/book/read/simple-summary-data",function(data){
         $("#income-recent-month").text(data.body.incomeall);
         $("#outlay-recent-month").text(data.body.outlayall);
+        $("#sum-of-month").text(data.body.incomeall - data.body.outlayall);
 
         var today = iso8601string(new Date());
         var today_income = data.body.data.filter(itm => {return itm.incometype == true && itm.recordDate == today;});
@@ -53,6 +54,7 @@ function update_user_data(){
         var today_outlay_val = today_outlay.reduce((acc,x) => acc + x.val,0);
         $("#income-today").text(today_income_val);
         $("#outlay-today").text(today_outlay_val);
+        $("#sum-of-today").text(today_income_val - today_outlay_val);
 
         $('#recent-data-tbody').empty();
         data.body.data.forEach(function(itm){
