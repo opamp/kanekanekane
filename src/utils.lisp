@@ -7,7 +7,8 @@
            :stringdate-to-lst
            :listdate-to-string
            :today-list
-           :date-exist-p))
+           :date-exist-p
+           :universal-time-to-iso8601-date))
 (in-package :kanekanekane.utils)
 
 (defmacro aif (condition t-form nil-form)
@@ -33,3 +34,9 @@
            (= d d2)
            (= m m2)
            ut))))
+
+(defun universal-time-to-iso8601-date (univtime)
+  (multiple-value-bind (sec min hour date month year day daylight zone)
+      (decode-universal-time univtime)
+    (declare (ignorable sec min hour date month year day daylight zone))
+    (format nil "~4,'0d-~2,'0d-~2,'0d" year month day)))
