@@ -40,6 +40,8 @@ function update_user_data(){
     $.getJSON("/book/read/simple-summary-data",function(data){
         $("#income-recent-month").text(data.body.incomeall);
         $("#outlay-recent-month").text(data.body.outlayall);
+
+        
     });
 }
 

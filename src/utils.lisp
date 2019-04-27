@@ -8,7 +8,8 @@
            :listdate-to-string
            :today-list
            :date-exist-p
-           :universal-time-to-iso8601-date))
+           :universal-time-to-iso8601-date
+           :book-data-date-to-iso8601))
 (in-package :kanekanekane.utils)
 
 (defmacro aif (condition t-form nil-form)
@@ -39,4 +40,9 @@
   (multiple-value-bind (sec min hour date month year day daylight zone)
       (decode-universal-time univtime)
     (declare (ignorable sec min hour date month year day daylight zone))
-    (format nil "~4,'0d-~2,'0d-~2,'0d" year month day)))
+    (format nil "~4,'0d-~2,'0d-~2,'0d" year month date)))
+
+(defun book-data-date-to-iso8601 (bookdata)
+  (let ((rtn (copy-list bookdata)))
+    (setf (getf rtn :RECORD-DATE) (universal-time-to-iso8601-date (getf rtn :RECORD-DATE)))
+    rtn))
