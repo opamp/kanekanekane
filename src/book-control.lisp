@@ -10,6 +10,8 @@
   (:export :prepare-values
            :write-new
            :read-data
+           :simplified-book-data
+           :simplified-book-lst
            :read-and-simplified-data-from-basepoint))
 (in-package :kanekanekane.book-control)
 
@@ -144,6 +146,20 @@
                (listdate-to-string (today-list))
                username)))
 
+(defun simplified-book-data (itm)
+  `(:record-date ,(getf itm :record-date)
+    :title ,(getf itm :title)
+    :incometype ,(getf itm :income)
+    :category ,(getf itm :catename)
+    :val ,(getf itm :val)
+    :comment ,(getf itm :comment)))
+
+(defun simplified-book-lst (lst &optional (predicate #'>))
+  (let (rtn)
+    (dolist (itm lst)
+      (setf rtn (append rtn (list (simplified-book-data itm)))))
+    (sort rtn predicate :key #'(lambda (x) (getf x :record-date)))))
+
 (defun read-and-simplified-data-from-basepoint (username)
   (multiple-value-bind (income-data outlay-data)
       (read-data-from-basepoint username)
@@ -161,15 +177,14 @@
                           (+ (getf cate (intern catename :keyword) 0) val))
                     (setf (getf daily (intern record-date :keyword) 0) val)))
                 `(:sum ,sum :cate ,cate :daily ,daily))))
-      (let* ((income-data (mapcar #'book-data-date-to-iso8601 income-data))
-             (outlay-data (mapcar #'book-data-date-to-iso8601 outlay-data))
-             (income-summary (summarize income-data))
-             (outlay-summary (summarize outlay-data)))
+      (let ((income-summary (summarize (mapcar #'book-data-date-to-iso8601 income-data)))
+             (outlay-summary (summarize (mapcar #'book-data-date-to-iso8601 outlay-data))))
         (values
-         `(:income ,income-data :outlay ,outlay-data)
+         (mapcar #'book-data-date-to-iso8601 (simplified-book-lst (append income-data outlay-data)))
          (getf income-summary :sum)
          (getf income-summary :cate)
          (getf income-summary :daily)
          (getf outlay-summary :sum)
          (getf outlay-summary :cate)
          (getf outlay-summary :daily))))))
+

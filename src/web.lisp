@@ -132,7 +132,7 @@
   (if-login
    *session*
    (let ((username (gethash :username *session*)))
-     (multiple-value-bind (raw-data i-sum i-cate i-daily o-sum o-cate o-daily)
+     (multiple-value-bind (s-data i-sum i-cate i-daily o-sum o-cate o-daily)
          (kanekanekane.book-control:read-and-simplified-data-from-basepoint username)
        (render-json (json-post-return 0 "OK" `(:incomeall ,i-sum
                                                :outlayall ,o-sum
@@ -140,8 +140,8 @@
                                                :outlaybreakdown ,o-cate
                                                :incomedaily ,i-daily
                                                :outlaydaily ,o-daily
-                                               :incomeraw ,(getf raw-data :income)
-                                               :outlayraw ,(getf raw-data :outlay))))))
+                                               :data ,(make-array (length s-data)
+                                                                  :initial-contents s-data))))))
    (throw-code 403)))
 
 ;;
