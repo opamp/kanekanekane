@@ -74,6 +74,8 @@ function update_user_data(){
             );
         });
 
+        $("#income-pie-graph").empty();
+        $("#outlay-pie-graph").empty();
         var breakdown_to_graphdata = function(d){
             var rtn = {values: [],labels: []};
             for(let key in d){
@@ -84,20 +86,26 @@ function update_user_data(){
         };
         var income_pie_data = breakdown_to_graphdata(data.body.incomebreakdown);
         var outlay_pie_data = breakdown_to_graphdata(data.body.outlaybreakdown);
-
-        var income_pie = [{
-            values: income_pie_data.values,
-            labels: income_pie_data.labels,
-            type: 'pie'
-        }];
-        var outlay_pie = [{
-            values: outlay_pie_data.values,
-            labels: outlay_pie_data.labels,
-            type: 'pie'
-        }];
-        console.log(income_pie);
-        Plotly.newPlot('income-pie-graph',income_pie);
-        Plotly.newPlot('outlay-pie-graph',outlay_pie);
+        if(income_pie_data.values.length != 0){
+            var income_pie = [{
+                values: income_pie_data.values,
+                labels: income_pie_data.labels,
+                type: 'pie'
+            }];
+            Plotly.newPlot('income-pie-graph',income_pie,{title: "収入内訳",font: {size: 21}});
+        }else{
+            $("#income-pie-graph").append('<p class="text-center">データがありません</p>');
+        }
+        if(outlay_pie_data.values.length != 0){
+            var outlay_pie = [{
+                values: outlay_pie_data.values,
+                labels: outlay_pie_data.labels,
+                type: 'pie'
+            }];
+            Plotly.newPlot('outlay-pie-graph',outlay_pie,{title: "支出内訳",font: {size: 21}});
+        }else{
+            $("#outlay-pie-graph").append('<p class="text-center">データがありません</p>');
+        }
     });
 }
 
