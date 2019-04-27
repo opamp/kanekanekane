@@ -135,10 +135,25 @@ function update_user_data(){
             x: daily_outlay_data.x,
             y: daily_outlay_data.y,
             name: "支出",
-            type: "bar"
+            type: "bar",
+            marker: {color: "red"}
         }];
-        Plotly.newPlot('daily-income-data-graph',daily_graph_income_data,{barmode: "group",xaxis:{dtick: 24*60*60*1000}});
-        Plotly.newPlot('daily-outlay-data-graph',daily_graph_outlay_data,{barmode: "group",xaxis:{dtick: 24*60*60*1000}});
+        Plotly.newPlot('daily-income-data-graph',
+                       daily_graph_income_data,
+                       {
+                           barmode: "group",
+                           font: {size: 21},
+                           xaxis: {dtick: 24*60*60*1000},
+                           yaxis: {title: "合計出費"},
+                       });
+        Plotly.newPlot('daily-outlay-data-graph',
+                       daily_graph_outlay_data,
+                       {
+                           barmode: "group",
+                           font: {size: 21},
+                           xaxis: {dtick: 24*60*60*1000},
+                           yaxis: {title: "合計出費"}
+                       });
     });
 }
 
