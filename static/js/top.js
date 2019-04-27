@@ -73,6 +73,31 @@ function update_user_data(){
                     .append($("<td></td>").text(itm.val))
             );
         });
+
+        var breakdown_to_graphdata = function(d){
+            var rtn = {values: [],labels: []};
+            for(let key in d){
+                rtn.labels.push(key);
+                rtn.values.push(d[key]);
+            }
+            return rtn;
+        };
+        var income_pie_data = breakdown_to_graphdata(data.body.incomebreakdown);
+        var outlay_pie_data = breakdown_to_graphdata(data.body.outlaybreakdown);
+
+        var income_pie = [{
+            values: income_pie_data.values,
+            labels: income_pie_data.labels,
+            type: 'pie'
+        }];
+        var outlay_pie = [{
+            values: outlay_pie_data.values,
+            labels: outlay_pie_data.labels,
+            type: 'pie'
+        }];
+        console.log(income_pie);
+        Plotly.newPlot('income-pie-graph',income_pie);
+        Plotly.newPlot('outlay-pie-graph',outlay_pie);
     });
 }
 
