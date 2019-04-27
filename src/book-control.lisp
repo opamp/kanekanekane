@@ -161,8 +161,10 @@
                           (+ (getf cate (intern catename :keyword) 0) val))
                     (setf (getf daily (intern record-date :keyword) 0) val)))
                 `(:sum ,sum :cate ,cate :daily ,daily))))
-      (let ((income-summary (summarize (mapcar #'book-data-date-to-iso8601 income-data)))
-            (outlay-summary (summarize (mapcar #'book-data-date-to-iso8601 outlay-data))))
+      (let* ((income-data (mapcar #'book-data-date-to-iso8601 income-data))
+             (outlay-data (mapcar #'book-data-date-to-iso8601 outlay-data))
+             (income-summary (summarize income-data))
+             (outlay-summary (summarize outlay-data)))
         (values
          `(:income ,income-data :outlay ,outlay-data)
          (getf income-summary :sum)
