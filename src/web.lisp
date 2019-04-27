@@ -72,6 +72,17 @@
                                     (kanekanekane.user-control:get-userdata username))))
    (throw-code 403)))
 
+(defroute "/user/get/basepoint-date" ()
+  (if-login
+   *session*
+   (let ((username (gethash :username *session*)))
+     (render-json (json-post-return 0
+                                    "OK"
+                                    (kanekanekane.book-control:make-basepoint-date
+                                     (getf (kanekanekane.user-control:get-userdata username)
+                                           :basepoint)))))
+   (throw-code 403)))
+
 (defroute "/user/update/basepoint/simple/:val" (&key val)
   (if-login
    *session*

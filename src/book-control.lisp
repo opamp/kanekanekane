@@ -8,6 +8,7 @@
         :kanekanekane.db.book
         :kanekanekane.db.categories)
   (:export :prepare-values
+           :make-basepoint-date
            :write-new
            :read-data
            :simplified-book-data
@@ -140,12 +141,6 @@
                        (new-basepoint-day (- current-day 1)))))
           (new-basepoint-day (- basepoint-day 1))))))
 
-(defun read-data-from-basepoint (username)
-  (let ((userinfo (select-user-with-username username)))
-    (read-data (listdate-to-string (make-basepoint-date (getf userinfo :basepoint)))
-               (listdate-to-string (today-list))
-               username)))
-
 (defun simplified-book-data (itm)
   `(:record-date ,(getf itm :record-date)
     :title ,(getf itm :title)
@@ -161,12 +156,15 @@
     (sort rtn predicate :key #'(lambda (x) (getf x :record-date)))))
 
 (defun read-and-simplified-data-from-basepoint (username)
-  (multiple-value-bind (income-data outlay-data)
-      (read-data-from-basepoint username)
+  (let* ((userinfo (select-user-with-username username))
+         (from-date (make-basepoint-date (getf userinfo :basepoint)))
+         (to-date (today-list)))
+    (multiple-value-bind (income-data outlay-data)
+      (read-data (listdate-to-string from-date) (listdate-to-string to-date) username)
     (labels ((summarize (data)
                (let ((sum 0)
                      cate
-                     daily)
+                     (daily (make-date-plist from-date to-date :initial-element 0)))
                 (dolist (elem data)
                   (let ((cate-id (getf elem :cate-id))
                         (catename (getf elem :catename))
@@ -186,5 +184,4 @@
          (getf income-summary :daily)
          (getf outlay-summary :sum)
          (getf outlay-summary :cate)
-         (getf outlay-summary :daily))))))
-
+         (getf outlay-summary :daily)))))))

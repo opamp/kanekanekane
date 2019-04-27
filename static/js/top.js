@@ -1,5 +1,4 @@
 function iso8601string(date){
-    var date;
     var date_year = date.getFullYear();
     var date_month = ("0"+(date.getMonth()+1)).slice(-2);
     var date_day = ("0"+date.getDate()).slice(-2);
@@ -111,7 +110,35 @@ function update_user_data(){
             $("#outlay-pie-graph").append('<p class="text-center">データがありません</p>');
         }
 
-        
+        var daily_date_to_graphdata = function(d){
+            var rtn = {x:[],y:[]};
+            for(let key in d){
+                console.log(String(key));
+                let year = String(key).slice(0,4);
+                let month = String(key).slice(4,6);
+                let date = String(key).slice(6,8);
+                rtn.x.push(year + "-" + month + "-" + date);
+                rtn.y.push(d[key]);
+            }
+            return rtn;
+        };
+
+        var daily_income_data = daily_date_to_graphdata(data.body.incomedaily);
+        var daily_outlay_data = daily_date_to_graphdata(data.body.outlaydaily);
+        var daily_graph_income_data = [{
+            x: daily_income_data.x,
+            y: daily_income_data.y,
+            name: "収入",
+            type: "bar"
+        }];
+        var daily_graph_outlay_data = [{
+            x: daily_outlay_data.x,
+            y: daily_outlay_data.y,
+            name: "支出",
+            type: "bar"
+        }];
+        Plotly.newPlot('daily-income-data-graph',daily_graph_income_data,{barmode: "group",xaxis:{dtick: 24*60*60*1000}});
+        Plotly.newPlot('daily-outlay-data-graph',daily_graph_outlay_data,{barmode: "group",xaxis:{dtick: 24*60*60*1000}});
     });
 }
 
