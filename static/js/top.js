@@ -1,3 +1,11 @@
+function iso8601string(date){
+    var date;
+    var date_year = date.getFullYear();
+    var date_month = ("0"+(date.getMonth()+1)).slice(-2);
+    var date_day = ("0"+date.getDate()).slice(-2);
+    return date_year + '-' + date_month + '-' + date_day;
+}
+
 function update_allmodal_detalist(){
     var datalisttype = $("#type-of-input").val();
     $("#existingcates").empty();
@@ -15,12 +23,9 @@ function update_allmodal_detalist(){
 }
 
 function setup_init_addmodal_date(){
-    var today = new Date();
-    var today_year = today.getFullYear();
-    var today_month = ("0"+(today.getMonth()+1)).slice(-2);
-    var today_day = ("0"+today.getDate()).slice(-2);
-    $("#date-of-data").val(today_year + '-' + today_month + '-' + today_day);
-    $("#date-of-data").attr("max",today_year + '-' + today_month + '-' + today_day);
+    var today = iso8601string(new Date());
+    $("#date-of-data").val(today);
+    $("#date-of-data").attr("max",today);
     update_allmodal_detalist();
 }
 
@@ -34,12 +39,20 @@ function update_user_data(){
     $.getJSON("/user/get/userdata",function(data){
         $("#user-welcome").text("ようこそ、"+data.body.username+"さん");
         $("#basepoint-setting").val(data.body.basepoint);
-        $("#current-balance").text(data.body.balance);
+        $("#current-balance").text("現在の残高は"+data.body.balance+"です");
     });
 
     $.getJSON("/book/read/simple-summary-data",function(data){
         $("#income-recent-month").text(data.body.incomeall);
         $("#outlay-recent-month").text(data.body.outlayall);
+
+        var today = iso8601string(new Date());
+        var today_income = data.body.data.filter(itm => {return itm.incometype == true && itm.recordDate == today;});
+        var today_outlay = data.body.data.filter(itm => {return itm.incometype != true && itm.recordDate == today;});
+        var today_income_val = today_income.reduce((acc,x) => acc + x.val,0);
+        var today_outlay_val = today_outlay.reduce((acc,x) => acc + x.val,0);
+        $("#income-today").text(today_income_val);
+        $("#outlay-today").text(today_outlay_val);
 
         $('#recent-data-tbody').empty();
         data.body.data.forEach(function(itm){

@@ -77,21 +77,27 @@
                             日からの集計を表示</p>
                         <div class="mx-4">
                             <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>今月</th>
+                                        <th>今日</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">今月収入</th>
+                                        <th scope="row">収入</th>
                                         <td id="income-recent-month">0</td>
+                                        <td id="income-today">0</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">今月支出</th>
+                                        <th scope="row">支出</th>
                                         <td id="outlay-recent-month">0</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">現在残高</th>
-                                        <td id="current-balance">0</td>
+                                        <td id="outlay-today">0</td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <p id="current-balance">N/A</p>
                         </div>
                     </div>
                 </div>
