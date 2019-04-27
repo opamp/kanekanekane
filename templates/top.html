@@ -66,9 +66,9 @@
 </div>
 <main role="main">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row row-eq-height">
             <div class="col-lg-6 m-0 p-4">
-                <div class="card border-dark"
+                <div class="card border-dark max-size"
                     <div class="card-body">
                         <h4 class="text-center" id="user-welcome">ようこそ</h4>
                         <p class="text-center">毎月
@@ -96,11 +96,11 @@
                     </div>
                 </div>
                 <div class="col-lg-6 m-0 p-4">
-                    <div class="card border-dark">
+                    <div class="card border-dark max-size">
                         <div class="card-header">
                             最近の支出・収入
                         </div>
-                        <div class="card-body">
+                        <div class="card-body table-scroll">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -111,7 +111,7 @@
                                         <th>金額</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="recent-data-tbody">
                                 </tbody>
                             </table>
                         </div>

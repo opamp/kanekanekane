@@ -3,4 +3,13 @@
     text-align: center;
 }
 
+.table-scroll {
+    overflow: auto;
+    overflow-x: hidden;
+    height: 15em;
+}
 
+.card-max-size {
+    height: 100%;
+    weight: 100%;
+}

@@ -41,7 +41,23 @@ function update_user_data(){
         $("#income-recent-month").text(data.body.incomeall);
         $("#outlay-recent-month").text(data.body.outlayall);
 
-        
+        $('#recent-data-tbody').empty();
+        data.body.data.forEach(function(itm){
+            var incometype = "";
+            if(itm.incometype == true){
+                incometype = "収入";
+            }else{
+                incometype = "支出";
+            }
+            $('#recent-data-tbody').append(
+                $("<tr></tr>")
+                    .append($("<td></td>").text(itm.recordDate))
+                    .append($("<td></td>").text(itm.title))
+                    .append($("<td></td>").text(incometype))
+                    .append($("<td></td>").text(itm.category))
+                    .append($("<td></td>").text(itm.val))
+            );
+        });
     });
 }
 

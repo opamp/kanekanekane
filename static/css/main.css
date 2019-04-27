@@ -19,3 +19,13 @@ a:hover {
 #main {
   text-align: center;
 }
+
+.row-eq-height {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.max-size {
+    height: 100%;
+    weight: 100%;
+}
