@@ -229,6 +229,7 @@ window.onload = function() {
                     thisbutton.attr("disabled",false);
                     clear_addmodal_input();
                     update_user_data();
+                    $("#add-new-modal").modal('hide');
                 }
             });
         }else{
