@@ -137,7 +137,18 @@
    (throw-code 403)))
 
 (defroute ("/book/read" :method :POST) (&key _parsed)
-  (format nil "not implemented"))
+  (if-login
+   *session*
+   (let ((username (gethash :username *session*))
+         (from-date (cdr (assoc "fromdate" _parsed :test #'string=)))
+         (to-date (cdr (assoc "todate" _parsed :test #'string=))))
+     (multiple-value-bind (income-data outlay-data)
+         (kanekanekane.book-control:read-data from-date to-date username)
+       (render-json (json-post-return 0 "OK" `(:income-data ,(make-array (length income-data)
+                                                                         :initial-contents income-data)
+                                               :outlay-data ,(make-array (length outlay-data)
+                                                                         :initial-contents outlay-data))))))
+   (throw-code 403)))
 
 (defroute "/book/read/simple-summary-data" ()
   (if-login
