@@ -44,6 +44,10 @@ function set_one_month_date(){
     $("#range-selector-from-input").val(iso8601string(fromday));
 }
 
+function build_data_table(data){
+    console.log(data);
+}
+
 function review_data(){
     if($("#range-selector-form").get(0).reportValidity()==true){
         var data = {
@@ -60,7 +64,7 @@ function review_data(){
             success: function(jsondata){
                 if(jsondata.code == 0){
                     console.log("No error reported.");
-                    console.log(jsondata);
+                    build_data_table(jsondata);
                 }else{
                     alert("サーバーエラーが発生しました。");
                     console.log(jsondata);

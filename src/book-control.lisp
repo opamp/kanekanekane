@@ -13,6 +13,7 @@
            :read-data
            :simplified-book-data
            :simplified-book-lst
+           :read-and-simplified-data
            :read-and-simplified-data-from-basepoint))
 (in-package :kanekanekane.book-control)
 
@@ -142,8 +143,10 @@
           (new-basepoint-day (- basepoint-day 1))))))
 
 (defun simplified-book-data (itm)
-  `(:record-date ,(getf itm :record-date)
+  `(:id ,(getf itm :id)
+    :record-date ,(getf itm :record-date)
     :title ,(getf itm :title)
+    :cateid ,(getf itm :cate-id)
     :incometype ,(getf itm :income)
     :category ,(getf itm :catename)
     :val ,(getf itm :val)
@@ -154,6 +157,12 @@
     (dolist (itm lst)
       (setf rtn (append rtn (list (simplified-book-data itm)))))
     (sort rtn predicate :key #'(lambda (x) (getf x :record-date)))))
+
+(defun read-and-simplified-data (from to username)
+  (multiple-value-bind (income-data outlay-data)
+      (read-data from to username)
+    (let ((rtn-data (append income-data outlay-data)))
+      (mapcar #'book-data-date-to-iso8601 (simplified-book-lst rtn-data)))))
 
 (defun read-and-simplified-data-from-basepoint (username)
   (let* ((userinfo (select-user-with-username username))
