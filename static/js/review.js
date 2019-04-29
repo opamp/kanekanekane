@@ -1,3 +1,5 @@
+var current_data;
+
 function iso8601string(date){
     var date_year = date.getFullYear();
     var date_month = ("0"+(date.getMonth()+1)).slice(-2);
@@ -45,7 +47,25 @@ function set_one_month_date(){
 }
 
 function build_data_table(data){
-    console.log(data);
+    current_data = data;
+    $('#data-tbody').empty();
+    data.body.data.forEach(function(itm){
+        var incometype = "";
+        if(itm.incometype == true){
+            incometype = "収入";
+        }else{
+            incometype = "支出";
+        }
+        $('#data-tbody').append(
+            $("<tr></tr>")
+                .append($("<td></td>").text(itm.recordDate))
+                .append($("<td></td>").text(itm.title))
+                .append($("<td></td>").text(incometype))
+                .append($("<td></td>").text(itm.category))
+                .append($("<td></td>").text(itm.val))
+                .append($("<td></td>").text(itm.comment))
+        );
+    });
 }
 
 function review_data(){
