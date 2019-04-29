@@ -27,11 +27,11 @@
       (setf where-lst (append where-lst `((:<= :record_date ,to)))))
     (with-connection (db)
       (if (= (length where-lst) 2)
-          (retrieve-all (select :*
+          (retrieve-all (select (:book.id :title :record_date :val :comment :cate_id :income :catename)
                                 (from :book)
                                 (inner-join :categories :on (:= :book.cate_id :categories.id))
                                 (where (:= :username username))))
-          (retrieve-all (select :*
+          (retrieve-all (select (:book.id :title :record_date :val :comment :cate_id :income :catename)
                                 (from :book)
                                 (inner-join :categories :on (:= :book.cate_id :categories.id))
                                 (where where-lst)))))))
