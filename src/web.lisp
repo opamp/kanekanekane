@@ -155,7 +155,7 @@
                                                    category
                                                    comment)
        (if rtn
-           (multiple-value-bind (rtn msg)
+           (multiple-value-bind (old-itm new-itm msg)
                (kanekanekane.book-control:rewrite-data id
                                                        (getf rtn :name)
                                                        (getf rtn :date)
@@ -164,21 +164,31 @@
                                                        (getf rtn :category)
                                                        (getf rtn :comment)
                                                        username)
-             (if rtn
-              (render-json (json-post-return 0 "OK"))
-              (render-json (json-post-return 2 msg))))
+             (if new-itm
+                 (if (kanekanekane.user-control:re-balance (getf old-itm :income)
+                                                           (getf old-itm :val)
+                                                           (getf new-itm :income)
+                                                           (getf new-itm :val)
+                                                           username)
+                     (render-json (json-post-return 0 "OK"))
+                     (render-json (json-post-return 3 "Failed to update balanace of user data")))
+                 (render-json (json-post-return 2 msg))))
            (render-json (json-post-return 1 msg)))))
    (throw-code 403)))
 
 (defroute ("/book/eliminate" :method :POST) (&key _parsed)
   (if-login
    *session*
-   (let ((ids (cdr (assoc "ids" _parsed :test #'string=)))
+   (let ((id (cdr (assoc "id" _parsed :test #'string=)))
          (username (gethash :username *session*)))
-     (let ((delete-rtn (mapcar #'kanekanekane.book-control:eliminate-data ids)))
-       (if (null (find -1 delete-rtn))
-           (render-json (json-post-return 0 "OK"))
-           (render-json (json-post-return 1 "Failed to eliminate" delete-rtn)))))
+     (let ((eliminated-data (kanekanekane.book-control:eliminate-data id)))
+       (if (not (null eliminated-data))
+           (if (kanekanekane.user-control:delete-balance (getf eliminated-data :income)
+                                                         (getf eliminated-data :val)
+                                                          username)
+               (render-json (json-post-return 0 "OK"))
+               (render-json (json-post-return 2 "Failed to change the balanace.")))
+           (render-json (json-post-return 1 "Failed to eliminate")))))
    (throw-code 403)))
 
 (defroute ("/book/read" :method :POST) (&key _parsed)

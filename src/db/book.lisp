@@ -8,6 +8,7 @@
         :sxql)
   (:export :create-new-item
            :read-item-by-id
+           :read-item-and-cate-by-id
            :read-items
            :read-items-by-cate-id
            :number-of-cate-id
@@ -29,6 +30,13 @@
     (retrieve-one (select :*
                           (from :book)
                           (where (:= :id id))))))
+
+(defun read-item-and-cate-by-id (id)
+  (with-connection (db)
+    (retrieve-one (select (:book.id :title :record_date :val :comment :cate_id :income :catename)
+                          (from :book)
+                          (inner-join :categories :on (:= :book.cate_id :categories.id))
+                          (where (:= :book.id id))))))
 
 (defun read-items (from to username)
   (let ((where-lst `(:and (:= :username ,username))))

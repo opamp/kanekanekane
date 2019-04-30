@@ -212,7 +212,7 @@ function delete_data(){
         $("#edit").attr("disabled",true);
         $("#delete").attr("disabled",true);
         var data = {
-            ids: [target_data.id]
+            id: target_data.id
         };
         $.ajax({
             type: "post",

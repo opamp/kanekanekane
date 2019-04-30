@@ -7,6 +7,8 @@
   (:export :signin
            :get-userdata
            :add-balance
+           :re-balance
+           :delete-balance
            :prepare-basepoint
            :change-basepoint))
 (in-package :kanekanekane.user-control)
@@ -41,6 +43,27 @@
                                 (- amount)))))
         (update-balance-with-username username new-balance)
         t))))
+
+(defun re-balance (old-incometype old-amount new-incometype new-amount username)
+  (let ((userinfo (get-userdata username))
+        (old-amount (if old-incometype old-amount (- old-amount)))
+        (new-amount (if new-incometype new-amount (- new-amount))))
+    (when userinfo
+      (let ((new-balance (+ (getf userinfo :balance)
+                            (- new-amount old-amount))))
+        (update-balance-with-username username new-balance)
+        t))))
+
+(defun delete-balance (incometype amount username)
+  (let ((userinfo (get-userdata username)))
+    (when userinfo
+      (let ((new-balance (- (getf userinfo :balance)
+                            (if incometype
+                                amount
+                                (- amount)))))
+        (update-balance-with-username username new-balance)
+        t))))
+
 
 (defun prepare-basepoint (day)
   (let ((day (handler-case (parse-integer day)
