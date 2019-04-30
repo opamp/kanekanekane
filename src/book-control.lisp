@@ -135,6 +135,7 @@
   (let ((target-data (read-item-and-cate-by-id id)))
     (when target-data
       (eliminate-item id)
+      (delete-cate-when-cate-id-is-zero (getf target-data :cate-id))
       target-data)))
 
 (defun read-data (from to username)
