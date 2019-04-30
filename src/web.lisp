@@ -155,7 +155,8 @@
                                                    category
                                                    comment)
        (if rtn
-           (if (kanekanekane.book-control:rewrite-data id
+           (multiple-value-bind (rtn msg)
+               (kanekanekane.book-control:rewrite-data id
                                                        (getf rtn :name)
                                                        (getf rtn :date)
                                                        (getf rtn :income)
@@ -163,8 +164,9 @@
                                                        (getf rtn :category)
                                                        (getf rtn :comment)
                                                        username)
-               (render-json (json-post-return 0 "OK(test)"))
-               (render-json (json-post-return 2 "Failed to write DB")))
+             (if rtn
+              (render-json (json-post-return 0 "OK"))
+              (render-json (json-post-return 2 msg))))
            (render-json (json-post-return 1 msg)))))
    (throw-code 403)))
 

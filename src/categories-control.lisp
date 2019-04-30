@@ -20,3 +20,4 @@
             (setf outlay-cates (append outlay-cates
                                        (list (getf entry :catename)))))))
     (list income-cates outlay-cates)))
+

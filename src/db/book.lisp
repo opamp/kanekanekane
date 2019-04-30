@@ -7,17 +7,25 @@
         :datafly
         :sxql)
   (:export :create-new-item
-           :read-items))
+           :read-item-by-id
+           :read-items
+           :rewrite-item))
 (in-package :kanekanekane.db.book)
 
-(defun create-new-item (title date amount comment cate-id)
+(defun create-new-item (title date val comment cate-id)
   (with-connection (db)
     (execute (insert-into :book
                           (set= :title title
                                 :record_date date
-                                :val amount
+                                :val val
                                 :comment comment
                                 :cate_id cate-id)))))
+
+(defun read-item-by-id (id)
+  (with-connection (db)
+    (retrieve-one (select :*
+                          (from :book)
+                          (where (:= :id id))))))
 
 (defun read-items (from to username)
   (let ((where-lst `(:and (:= :username ,username))))
@@ -35,3 +43,14 @@
                                 (from :book)
                                 (inner-join :categories :on (:= :book.cate_id :categories.id))
                                 (where where-lst)))))))
+
+
+(defun rewrite-item (id title date val comment cate-id)
+  (with-connection (db)
+    (execute (update :book
+                     (set= :title title
+                           :record_date date
+                           :val val
+                           :comment comment
+                           :cate_id cate-id)
+                     (where (:= :id id))))))

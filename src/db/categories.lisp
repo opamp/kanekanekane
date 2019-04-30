@@ -7,6 +7,7 @@
         :datafly
         :sxql)
   (:export :find-cate
+           :find-cate-by-id
            :create-new-cate
            :create-new-cate-and-return
            :get-all-categories))
@@ -26,6 +27,13 @@
                  (where (:and (:= :catename name)
                               (:= :username username)
                               (:= :income "false"))))))))
+
+(defun find-cate-by-id (id)
+  (with-connection (db)
+    (retrieve-one
+     (select :*
+             (from :categories)
+             (where (:= :id id))))))
 
 (defun create-new-cate (name incometype username)
   (with-connection (db)

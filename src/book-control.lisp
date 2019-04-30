@@ -113,9 +113,18 @@
       t)))
 
 (defun rewrite-data (id name date income amount category comment username)
-  ;; not implemented yet
-  
-  t)
+  (format t ">>> rewrite req =  ~A ~A ~A ~A ~A ~A ~A ~A~%"
+          id name date income amount category comment username)
+  (let ((current-data (read-item-by-id id))
+        (new-cate-data (find-cate category income username)))
+    (format t ">> current-data = ~A~%catedata = ~A~%~%" current-data new-cate-data)
+    (if (null current-data)
+        (values nil (format nil "id = ~A data is not found" id))
+        (let ((new-cate-data (if (null new-cate-data)
+                                 (create-new-cate-and-return category income username)
+                                 new-cate-data)))
+          (rewrite-item id name date amount comment (getf new-cate-data :id))
+          (values t "OK")))))
 
 (defun read-data (from to username)
   (let ((from (if from (prepare-date from) nil))
