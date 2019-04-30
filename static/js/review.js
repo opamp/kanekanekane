@@ -1,4 +1,5 @@
 var current_data;
+var editing_data_id;
 
 function find_data(id){
     var data = current_data.body.data;
@@ -65,6 +66,7 @@ function start_editor(id){
     if(typeof target_data === "undefined"){
         alert("指定データが見つかりません。\nページをリロードしてやり直してください。\n改善されない場合管理者へ報告してください。\n[id = "+id+"]");
     }else{
+        editing_data_id = id;
         $("#money-data-name").val(target_data.title);
         $("#date-of-data").val(target_data.recordDate);
         if(target_data.incometype === true){
@@ -77,6 +79,17 @@ function start_editor(id){
         $("#comment-input").val(target_data.comment);
         $("#editor-modal").modal("show");
     }
+}
+
+function finish_editor(){
+    $("#money-data-name").val("");
+    $("#date-of-data").val("");
+    $("#type-of-input").val("");
+    $("#amount-of-money").val("");
+    $("#cate-input").val("");
+    $("#comment-input").val("");
+    editing_data_id = -1;
+    $("#editor-modal").modal("hide");
 }
 
 function build_data_table(data){
@@ -136,7 +149,72 @@ function review_data(){
     }
 }
 
+function edit_data(){
+    var target_data = find_data(editing_data_id);
+    if($("#editor-form").get(0).reportValidity() == true && typeof target_data !== "undefined"){
+        $("#edit").attr("disabled",true);
+        $("#delete").attr("disabled",true);
+
+        //read data
+        var dataname = $("#money-data-name").val();
+        var date = $("#date-of-data").val();
+        var typeisincome = false;
+        if($("#type-of-input").val() != "outlay"){
+            typeisincome = true;
+        }
+        var amount = $("#amount-of-money").val();
+        var cate = $("#cate-input").val();
+        var comment = $("#comment-input").val();
+
+        var data = {
+            id: target_data.id,
+            name: dataname,
+            date: date,
+            incometype: typeisincome,
+            amount: amount,
+            category: cate,
+            comment: comment
+        };
+
+        $.ajax({
+            type: "post",
+            url: "/book/rewrite",
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            dataType: "json",
+            success: function(jsondata){
+                if(jsondata.code == 0){
+                    console.log("No error reported.");
+                }else{
+                    alert("不正な入力によりデータは記録されませんでした。\n入力内容をご確認ください。");
+                    console.log(jsondata);
+                }
+            },
+            error: function(){
+                console.log("send error");
+                alert("サーバーへのデータ送信時に問題が発生しました。\nページをリロードしてやりなおしてください。\n改善しない場合はサーバー管理者へお問い合わせください。");
+            },
+            complete: function(){
+                $("#edit").attr("disabled",false);
+                $("#delete").attr("disabled",false);
+                finish_editor();
+            }
+        });
+    }else{
+        console.log("Required form is not filled out.");
+    }
+}
+
+function delete_data(){
+    console.log(editing_data_id);
+
+    finish_editor();
+}
+
 window.onload = function(){
+    editing_data_id = -1;
     set_this_month_date();
     $("button#range-select-button").click(review_data);
+    $("button#edit").click(edit_data);
+    $("button#delete").click(delete_data);
 }

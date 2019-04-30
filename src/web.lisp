@@ -136,6 +136,38 @@
            (render-json (json-post-return 1 msg)))))
    (throw-code 403)))
 
+(defroute ("/book/rewrite" :method :POST) (&key _parsed)
+  (if-login
+   *session*
+   (let ((id (cdr (assoc "id" _parsed :test #'string=)))
+         (name (cdr (assoc "name" _parsed :test #'string=)))
+         (date (cdr (assoc "date" _parsed :test #'string=)))
+         (incometype (cdr (assoc "incometype" _parsed :test #'string=)))
+         (amount (cdr (assoc "amount" _parsed :test #'string=)))
+         (category (cdr (assoc "category" _parsed :test #'string=)))
+         (comment (cdr (assoc "comment" _parsed :test #'string=)))
+         (username (gethash :username *session*)))
+     (multiple-value-bind (rtn msg)
+         (kanekanekane.book-control:prepare-values name
+                                                   date
+                                                   incometype
+                                                   amount
+                                                   category
+                                                   comment)
+       (if rtn
+           (if (kanekanekane.book-control:rewrite-data id
+                                                       (getf rtn :name)
+                                                       (getf rtn :date)
+                                                       (getf rtn :income)
+                                                       (getf rtn :amount)
+                                                       (getf rtn :category)
+                                                       (getf rtn :comment)
+                                                       username)
+               (render-json (json-post-return 0 "OK(test)"))
+               (render-json (json-post-return 2 "Failed to write DB")))
+           (render-json (json-post-return 1 msg)))))
+   (throw-code 403)))
+
 (defroute ("/book/read" :method :POST) (&key _parsed)
   (if-login
    *session*

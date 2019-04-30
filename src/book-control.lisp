@@ -10,6 +10,7 @@
   (:export :prepare-values
            :make-basepoint-date
            :write-new
+           :rewrite-data
            :read-data
            :simplified-book-data
            :simplified-book-lst
@@ -110,6 +111,11 @@
     (when cat-data
       (create-new-item name date amount comment (getf cat-data :id))
       t)))
+
+(defun rewrite-data (id name date income amount category comment username)
+  ;; not implemented yet
+  
+  t)
 
 (defun read-data (from to username)
   (let ((from (if from (prepare-date from) nil))
