@@ -89,6 +89,7 @@ function finish_editor(){
     $("#cate-input").val("");
     $("#comment-input").val("");
     editing_data_id = -1;
+    review_data();
     $("#editor-modal").modal("hide");
 }
 
