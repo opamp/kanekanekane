@@ -11,6 +11,7 @@
            :make-basepoint-date
            :write-new
            :rewrite-data
+           :eliminate-data
            :read-data
            :simplified-book-data
            :simplified-book-lst
@@ -35,7 +36,7 @@
 
 (defun prepare-date (date)
   (let ((date-lst (handler-case (stringdate-to-lst date)
-                (error () nil))))
+                    (error () nil))))
     (cond
       ((null date-lst)
        (error 'invalid-input-value :valname "date-lst" :msg "invalid date data"))
@@ -129,6 +130,10 @@
           (when (/= (getf current-data :cate-id) (getf new-cate-data :id))
             (delete-cate-when-cate-id-is-zero (getf current-data :cate-id)))
           (values t "OK")))))
+
+(defun eliminate-data (id)
+  (handler-case (progn (eliminate-item id) id)
+    (error () -1)))
 
 (defun read-data (from to username)
   (let ((from (if from (prepare-date from) nil))

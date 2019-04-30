@@ -207,8 +207,39 @@ function edit_data(){
 }
 
 function delete_data(){
-    console.log(editing_data_id);
-
+    var target_data = find_data(editing_data_id);
+    if($("#editor-form").get(0).reportValidity() == true && typeof target_data !== "undefined"){
+        $("#edit").attr("disabled",true);
+        $("#delete").attr("disabled",true);
+        var data = {
+            ids: [target_data.id]
+        };
+        $.ajax({
+            type: "post",
+            url: "/book/eliminate",
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            dataType: "json",
+            success: function(jsondata){
+                if(jsondata.code == 0){
+                    console.log("No error reported.");
+                }else{
+                    alert("サーバーでエラーが発生しました。\nページをリロードしてやり直してください。\n改善しない場合はサーバー管理者へお問い合わせください。");
+                    console.log(jsondata);
+                }
+            },
+            error: function(){
+                console.log("send error");
+                alert("サーバーへのデータ送信時に問題が発生しました。\nページをリロードしてやりなおしてください。\n改善しない場合はサーバー管理者へお問い合わせください。");
+            },
+            complete: function(){
+                $("#edit").attr("disabled",false);
+                $("#delete").attr("disabled",false);
+                finish_editor();
+            } 
+        });
+    }else{
+    }
     finish_editor();
 }
 

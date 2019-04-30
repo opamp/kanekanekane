@@ -11,6 +11,7 @@
            :read-items
            :read-items-by-cate-id
            :number-of-cate-id
+           :eliminate-item
            :rewrite-item))
 (in-package :kanekanekane.db.book)
 
@@ -64,3 +65,8 @@
                            :comment comment
                            :cate_id cate-id)
                      (where (:= :id id))))))
+
+(defun eliminate-item (id)
+  (with-connection (db)
+    (execute (delete-from :book
+                          (where (:= :id id))))))

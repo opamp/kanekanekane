@@ -170,6 +170,17 @@
            (render-json (json-post-return 1 msg)))))
    (throw-code 403)))
 
+(defroute ("/book/eliminate" :method :POST) (&key _parsed)
+  (if-login
+   *session*
+   (let ((ids (cdr (assoc "ids" _parsed :test #'string=)))
+         (username (gethash :username *session*)))
+     (let ((delete-rtn (mapcar #'kanekanekane.book-control:eliminate-data ids)))
+       (if (null (find -1 delete-rtn))
+           (render-json (json-post-return 0 "OK"))
+           (render-json (json-post-return 1 "Failed to eliminate" delete-rtn)))))
+   (throw-code 403)))
+
 (defroute ("/book/read" :method :POST) (&key _parsed)
   (if-login
    *session*
