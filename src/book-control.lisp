@@ -112,18 +112,22 @@
       (create-new-item name date amount comment (getf cat-data :id))
       t)))
 
+(defun delete-cate-when-cate-id-is-zero (cate-id)
+  (let ((cate-id-num (number-of-cate-id cate-id)))
+    (when (= cate-id-num 0)
+      (delete-cate cate-id))))
+
 (defun rewrite-data (id name date income amount category comment username)
-  (format t ">>> rewrite req =  ~A ~A ~A ~A ~A ~A ~A ~A~%"
-          id name date income amount category comment username)
   (let ((current-data (read-item-by-id id))
         (new-cate-data (find-cate category income username)))
-    (format t ">> current-data = ~A~%catedata = ~A~%~%" current-data new-cate-data)
     (if (null current-data)
         (values nil (format nil "id = ~A data is not found" id))
         (let ((new-cate-data (if (null new-cate-data)
                                  (create-new-cate-and-return category income username)
                                  new-cate-data)))
           (rewrite-item id name date amount comment (getf new-cate-data :id))
+          (when (/= (getf current-data :cate-id) (getf new-cate-data :id))
+            (delete-cate-when-cate-id-is-zero (getf current-data :cate-id)))
           (values t "OK")))))
 
 (defun read-data (from to username)

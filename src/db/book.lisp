@@ -9,6 +9,8 @@
   (:export :create-new-item
            :read-item-by-id
            :read-items
+           :read-items-by-cate-id
+           :number-of-cate-id
            :rewrite-item))
 (in-package :kanekanekane.db.book)
 
@@ -44,6 +46,14 @@
                                 (inner-join :categories :on (:= :book.cate_id :categories.id))
                                 (where where-lst)))))))
 
+(defun read-items-by-cate-id (cate-id)
+  (with-connection (db)
+    (retrieve-all (select :*
+                          (from :book)
+                          (where (:= :cate_id cate-id))))))
+
+(defun number-of-cate-id (cate-id)
+  (length (read-items-by-cate-id cate-id)))
 
 (defun rewrite-item (id title date val comment cate-id)
   (with-connection (db)

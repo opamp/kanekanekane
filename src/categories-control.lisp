@@ -21,3 +21,4 @@
                                        (list (getf entry :catename)))))))
     (list income-cates outlay-cates)))
 
+

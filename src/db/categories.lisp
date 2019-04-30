@@ -10,7 +10,8 @@
            :find-cate-by-id
            :create-new-cate
            :create-new-cate-and-return
-           :get-all-categories))
+           :get-all-categories
+           :delete-cate))
 (in-package :kanekanekane.db.categories)
 
 (defun find-cate (name incometype username)
@@ -58,3 +59,8 @@
      (select :*
              (from :categories)
              (where (:= :username username))))))
+
+(defun delete-cate (id)
+  (with-connection (db)
+    (execute (delete-from :categories
+                          (where (:= :id id))))))
