@@ -1,5 +1,19 @@
 var current_data;
 
+function find_data(id){
+    var data = current_data.body.data;
+    return data.find(function(x){
+        return x.id == id;
+    });
+}
+
+function find_data_index(id){
+    var data = current_data.body.data;
+    return data.findIndex(function(x){
+        return x.id == id;
+    });
+}
+
 function iso8601string(date){
     var date_year = date.getFullYear();
     var date_month = ("0"+(date.getMonth()+1)).slice(-2);
@@ -47,7 +61,22 @@ function set_one_month_date(){
 }
 
 function start_editor(id){
-    $("#editor-modal").modal("show");
+    var target_data = find_data(id);
+    if(typeof target_data === "undefined"){
+        alert("指定データが見つかりません。\nページをリロードしてやり直してください。\n改善されない場合管理者へ報告してください。\n[id = "+id+"]");
+    }else{
+        $("#money-data-name").val(target_data.title);
+        $("#date-of-data").val(target_data.recordDate);
+        if(target_data.incometype === true){
+            $("#type-of-input").val("income");
+        }else{
+            $("#type-of-input").val("outlay");
+        }
+        $("#amount-of-money").val(target_data.val);
+        $("#cate-input").val(target_data.category);
+        $("#comment-input").val(target_data.comment);
+        $("#editor-modal").modal("show");
+    }
 }
 
 function build_data_table(data){
