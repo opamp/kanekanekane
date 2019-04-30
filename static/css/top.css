@@ -2,11 +2,3 @@
     padding: 1em;
     text-align: center;
 }
-
-.table-scroll {
-    overflow: auto;
-    overflow-x: hidden;
-    height: 15em;
-}
-
-

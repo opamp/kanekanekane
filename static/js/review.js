@@ -46,6 +46,10 @@ function set_one_month_date(){
     $("#range-selector-from-input").val(iso8601string(fromday));
 }
 
+function start_editor(id){
+    $("#editor-modal").modal("show");
+}
+
 function build_data_table(data){
     current_data = data;
     $('#data-tbody').empty();
@@ -64,6 +68,7 @@ function build_data_table(data){
                 .append($("<td></td>").text(itm.category))
                 .append($("<td></td>").text(itm.val))
                 .append($("<td></td>").text(itm.comment))
+                .append($("<td></td>").append('<button onclick="start_editor('+itm.id+');" type="button" class="btn btn-warning btn-sm">Edit</button>'))
         );
     });
 }

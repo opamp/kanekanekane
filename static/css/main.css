@@ -29,3 +29,9 @@ a:hover {
     height: 100%;
     width: 100%;
 }
+
+.table-scroll {
+    overflow: auto;
+    overflow-x: auto;
+    height: 15em;
+}
