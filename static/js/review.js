@@ -361,14 +361,14 @@ function save_data_csv(){
     });
     var blob = new Blob([text]);
     $("#dl-btn-area").empty();
-    $("#dl-btn-area").append('<a href="'+window.URL.createObjectURL(blob)+'" target="_blank">Download here</a>');
+    $("#dl-btn-area").append('<a href="'+window.URL.createObjectURL(blob)+'" download="kanekanekane_data.csv">Download here</a>');
 }
 
 function save_data_json(){
     var text = JSON.stringify(current_data.body.data);
     var blob = new Blob([text]);
     $("#dl-btn-area").empty();
-    $("#dl-btn-area").append('<a href="'+window.URL.createObjectURL(blob)+'" target="_blank">Download here</a>');
+    $("#dl-btn-area").append('<a href="'+window.URL.createObjectURL(blob)+'" download="kanekanekane_data.json">Download here</a>');
 }
 
 window.onload = function(){
