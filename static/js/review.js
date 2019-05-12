@@ -171,8 +171,8 @@ function build_graph(data){
         wdate.setDate(wdate.getDate()+1);
     }
 
-    Plotly.newPlot("income-change-graph-area",income_data,{barmode: "stack"});
-    Plotly.newPlot("outlay-change-graph-area",outlay_data,{barmode: "stack"});
+    Plotly.newPlot("income-change-graph-area",income_data,{barmode: "stack",font: {size: 18}});
+    Plotly.newPlot("outlay-change-graph-area",outlay_data,{barmode: "stack",font: {size: 18}});
     return [income_data,outlay_data];
 }
 
