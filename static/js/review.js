@@ -116,6 +116,66 @@ function build_data_table(data){
     });
 }
 
+function build_graph(data){
+    var income_data = [];
+    var outlay_data = [];
+
+    data.body.data.forEach(function(itm){
+        let catename = itm.category;
+        if(itm.incometype == true){
+            if(income_data.findIndex(function(elm){return elm.name == catename;}) < 0){
+                income_data.push({
+                    x: [],
+                    y: [],
+                    name: catename,
+                    type: "bar"
+                });
+            }
+        }else{
+            if(outlay_data.findIndex(function(elm){return elm.name == catename;}) < 0){
+                outlay_data.push({
+                    x: [],
+                    y: [],
+                    name: catename,
+                    type: "bar"
+                });
+            }
+        }
+    });
+
+    var wdate = new Date($("#range-selector-from-input").val());
+    var todate = new Date($("#range-selector-to-input").val());
+    while(wdate.getTime() <= todate.getTime()){
+        income_data.forEach(function(itm){
+            itm.x.push(iso8601string(wdate));
+            let target_itms = data.body.data.filter(function(elm){
+                return elm.category == itm.name && elm.incometype == true &&
+                    (new Date(elm.recordDate)).getTime() == wdate.getTime();
+            });
+            let sum = 0;
+            target_itms.forEach(function(elm){sum += elm.val;});
+            itm.y.push(sum);
+        });
+
+        outlay_data.forEach(function(itm){
+            itm.x.push(iso8601string(wdate));
+            let target_itms = data.body.data.filter(function(elm){
+                return elm.category == itm.name && elm.incometype != true &&
+                    (new Date(elm.recordDate)).getTime() == wdate.getTime();
+            });
+            let sum = 0;
+            target_itms.forEach(function(elm){sum += elm.val;});
+            itm.y.push(sum);
+        });
+
+        wdate.setDate(wdate.getDate()+1);
+    }
+
+    Plotly.newPlot("income-change-graph-area",income_data,{barmode: "stack"});
+    Plotly.newPlot("outlay-change-graph-area",outlay_data,{barmode: "stack"});
+    return [income_data,outlay_data];
+}
+
 function review_data(){
     if($("#range-selector-form").get(0).reportValidity()==true){
         var data = {
@@ -133,6 +193,7 @@ function review_data(){
                 if(jsondata.code == 0){
                     console.log("No error reported.");
                     build_data_table(jsondata);
+                    build_graph(jsondata);
                 }else{
                     alert("サーバーエラーが発生しました。");
                     console.log(jsondata);
