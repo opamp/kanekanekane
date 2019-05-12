@@ -8,7 +8,8 @@ Webで動作する家計簿的な何か。
 
 ## Installation
 
-Common Lisp + caveman2で作っているので、そんな感じで。
+- 動かす前にsql/init-postgres.sqlを使ってDBを初期化
+- その後はCommon Lisp + caveman2で作っているので、そんな感じで。
 
 ## 使い方
 
