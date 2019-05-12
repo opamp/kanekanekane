@@ -63,6 +63,12 @@
   (format nil "SEE YOU...")
   (jump-to "/" 1))
 
+(defroute "/user/info" ()
+  (if-login
+   *session*
+   (render #p"userinfo.html")
+   (jump-to "/")))
+
 (defroute "/user/get/userdata" ()
   (if-login
    *session*
