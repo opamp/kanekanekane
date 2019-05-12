@@ -1,6 +1,8 @@
 {% extends "layouts/default-bootstrap.html" %}
 {% block title %}User information of Kane-Kane-Kane{% endblock %}
-{% block head-additional-content %}{% endblock %}
+{% block head-additional-content %}
+<script type="text/javascript" src="/js/userinfo.js"></script>
+{% endblock %}
 {% block content %}
 <header>
     <nav class="navbar navbar-dark bg-dark">
@@ -22,12 +24,12 @@
             <div class="col-lg-6 m-0 p-4">
                 <form id="user-data">
                     <div class="form-group">
-                        <label for="username" class="col-form-label">Username </label>
+                        <label for="username" class="col-form-label">ユーザー名（変更できません） </label>
                         <input type="text" class="form-control" id="username" disabled="disabled">
                     </div>
                     <div class="form-group">
                         <label for="userbalance" class="col-form-label">残高 </label>
-                        <input type="text" class="form-control" id="userbalance" required>
+                        <input type="number" class="form-control" id="userbalance" required>
                     </div>
                     <button type="button" class="btn btn-primary" id="userdata-btn">Update</button>
                 </form>
@@ -35,8 +37,8 @@
             <div class="col-lg-6 m-0 p-4">
                 <form id="user-password">
                     <div class="form-group">
-                        <label for="password" class="col-form-label">New password </label>
-                        <input type="text" class="form-control" id="password" required>
+                        <label for="password" class="col-form-label">新しいパスワード </label>
+                        <input type="password" class="form-control" id="password" required>
                     </div>
                     <button type="button" class="btn btn-primary" id="password-btn">Update</button>
                 </form>

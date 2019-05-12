@@ -10,7 +10,10 @@
            :re-balance
            :delete-balance
            :prepare-basepoint
-           :change-basepoint))
+           :prepare-password
+           :change-basepoint
+           :change-balance
+           :change-password))
 (in-package :kanekanekane.user-control)
 
 (defun hash-password (password)
@@ -73,5 +76,18 @@
                (<= day 31))
       day)))
 
+(defun prepare-password (pass)
+  (unless (< (length pass) 4)
+    pass))
+
 (defun change-basepoint (day username)
   (update-basepoint-with-username username day))
+
+(defun change-balance (val username)
+  (update-balance-with-username username val)
+  t)
+
+(defun change-password (password username)
+  (let ((hashed-password (byte-array-to-hex-string (hash-password password))))
+    (update-password-with-username username hashed-password)
+    t))

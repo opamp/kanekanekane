@@ -101,6 +101,31 @@
          (format nil "failed to update")))
    (throw-code 403)))
 
+(defroute ("/user/update/balance" :method :POST) (&key _parsed)
+  (if-login
+   *session*
+   (let ((username (gethash :username *session*))
+         (balance (handler-case (parse-integer (cdr (assoc "val" _parsed :test #'string=)))
+                    (error () nil))))
+     (if balance
+         (if (kanekanekane.user-control:change-balance balance username)
+             (render-json (json-post-return 0 "OK"))
+             (render-json (json-post-return 2 "Failed to update balance")))
+         (render-json (json-post-return 1 "Invalid value posted"))))
+   (throw-code 403)))
+
+(defroute ("/user/update/password" :method :POST) (&key _parsed)
+  (if-login
+   *session*
+   (let ((username (gethash :username *session*))
+         (password (cdr (assoc "val" _parsed :test #'string=))))
+     (if (kanekanekane.user-control:prepare-password password)
+         (if (kanekanekane.user-control:change-password password username)
+             (render-json (json-post-return 0 "OK"))
+             (render-json (json-post-return 2 "Failed to update password")))
+         (render-json (json-post-return 1 "Too short password"))))
+   (throw-code 403)))
+
 (defroute "/category/get/all" ()
   (if-login
    *session*
