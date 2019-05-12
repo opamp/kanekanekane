@@ -71,8 +71,8 @@
 </div>
 <main role="main">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 m-0 p-3">
+        <div class="row my-3">
+            <div class="col-12 m-0">
                 <div class="card border-dark m-2">
                     <div class="card-header">
                         データ一覧
@@ -113,16 +113,73 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 m-0 p-3">
-                <div class="card border-dark m-2">
-                    <div class="card-header">収入推移</div>
-                    <div id="income-change-graph-area"></div>
+        </div>
+        <div class="row row-eq-height my-3">
+            <div class="col-lg-6 m-0">
+                <div class="card border-dark m-2 max-size">
+                    <div class="card-header">選択データ集計</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>合計</th>
+                                    <th>1日あたり</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">収入合計</th>
+                                    <td id="income-sum">0</td>
+                                    <td id="income-sum-day">0</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">支出合計</th>
+                                    <td id="outlay-sum">0</td>
+                                    <td id="outlay-sum-day">0</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">差額</th>
+                                    <td id="diff">0</td>
+                                    <td id="diff-day">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div class="col-12 m-0 p-3">
+            <div class="col-lg-6 my-0">
+                <div class="card border-dark m-2 max-size">
+                    <div class="card-header">データを取得</div>
+                    <div class="card-body">
+                        <div class="text-center p-3">
+                            <p>取得したデータをダウンロードできます</p>
+                            <button id="data-gen-btn-csv" type="button" class="btn btn-primary">CSV</button>
+                            <button id="data-gen-btn-json" type="button" class="btn btn-primary">JSON</button>
+                            <div id="dl-btn-area" class="m-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-12 m-0">
+                <div class="card border-dark m-2">
+                    <div class="card-header">収入推移</div>
+                    <div class="card-body">
+                        <div id="income-change-graph-area"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-12 m-0">
                 <div class="card border-dark m-2">
                     <div class="card-header">支出推移</div>
-                    <div id="outlay-change-graph-area"></div>
+                    <div class="card-body">
+                        <div id="outlay-change-graph-area"></div>
+                    </div>
                 </div>
             </div>
         </div>

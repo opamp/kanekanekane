@@ -176,6 +176,25 @@ function build_graph(data){
     return [income_data,outlay_data];
 }
 
+function build_table(data){
+    let sum_income = 0;
+    let sum_outlay = 0;
+    data.body.data.forEach(function(itm){
+        if(itm.incometype == true){
+            sum_income += itm.val;
+        }else{
+            sum_outlay += itm.val;
+        }
+    });
+    let days = ((new Date($("#range-selector-to-input").val())) - (new Date($("#range-selector-from-input").val())))/86400000;
+    $("#income-sum").text(sum_income);
+    $("#income-sum-day").text(Math.round(sum_income/days));
+    $("#outlay-sum").text(sum_outlay);
+    $("#outlay-sum-day").text(Math.round(sum_outlay/days));
+    $("#diff").text(sum_income - sum_outlay);
+    $("#diff-day").text(Math.round(sum_income/days - sum_outlay/days));
+}
+
 function review_data(){
     if($("#range-selector-form").get(0).reportValidity()==true){
         var data = {
@@ -194,6 +213,7 @@ function review_data(){
                     console.log("No error reported.");
                     build_data_table(jsondata);
                     build_graph(jsondata);
+                    build_table(jsondata);
                 }else{
                     alert("サーバーエラーが発生しました。");
                     console.log(jsondata);
@@ -304,10 +324,59 @@ function delete_data(){
     finish_editor();
 }
 
+function save_data_csv(){
+    var text = "id,title,date,value,comment,cate_id,incometype,category_name\n";
+    current_data.body.data.forEach(function(itm){
+        if(itm.incometype == true){
+            text += itm.id
+                + ","
+                + itm.title
+                + ","
+                + itm.recordDate
+                + ","
+                + itm.val
+                + ","
+                + itm.comment
+                + ","
+                + itm.cateid
+                + ",true,"
+                + itm.category
+                + "\n";
+        }else{
+            text += itm.id
+                + ","
+                + itm.title
+                + ","
+                + itm.recordDate
+                + ","
+                + itm.val
+                + ","
+                + itm.comment
+                + ","
+                + itm.cateid
+                + ",false,"
+                + itm.category
+                + "\n";
+        }
+    });
+    var blob = new Blob([text]);
+    $("#dl-btn-area").empty();
+    $("#dl-btn-area").append('<a href="'+window.URL.createObjectURL(blob)+'" target="_blank">Download here</a>');
+}
+
+function save_data_json(){
+    var text = JSON.stringify(current_data.body.data);
+    var blob = new Blob([text]);
+    $("#dl-btn-area").empty();
+    $("#dl-btn-area").append('<a href="'+window.URL.createObjectURL(blob)+'" target="_blank">Download here</a>');
+}
+
 window.onload = function(){
     editing_data_id = -1;
     set_this_month_date();
     $("button#range-select-button").click(review_data);
     $("button#edit").click(edit_data);
     $("button#delete").click(delete_data);
+    $("button#data-gen-btn-csv").click(save_data_csv);
+    $("button#data-gen-btn-json").click(save_data_json);
 }
