@@ -6,6 +6,7 @@
         :kanekanekane.db.users)
   (:export :signin
            :get-userdata
+           :user-add
            :add-balance
            :re-balance
            :delete-balance
@@ -36,6 +37,13 @@
       ,(getf userinfo :basepoint)
       :balance
       ,(getf userinfo :balance))))
+
+(defun user-add (username password)
+  (let ((userinfo (select-user-with-username username))
+        (hashed-password (byte-array-to-hex-string (hash-password password))))
+    (unless userinfo
+      (insert-user username hashed-password)
+      (get-userdata username))))
 
 (defun add-balance (incometype amount username)
   (let ((userinfo (get-userdata username)))
@@ -91,3 +99,5 @@
   (let ((hashed-password (byte-array-to-hex-string (hash-password password))))
     (update-password-with-username username hashed-password)
     t))
+
+

@@ -9,7 +9,8 @@
   (:export :select-user-with-username
            :update-password-with-username
            :update-balance-with-username
-           :update-basepoint-with-username))
+           :update-basepoint-with-username
+           :insert-user))
 (in-package :kanekanekane.db.users)
 
 (defun select-user-with-username (username)
@@ -36,3 +37,10 @@
                      (set= :basepoint basepoint)
                      (where (:= :username username))))))
 
+(defun insert-user (username password)
+  (with-connection (db)
+    (execute (insert-into :users
+                          (set= :username username
+                                :password password
+                                :balance 0
+                                :basepoint 1)))))
