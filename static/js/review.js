@@ -2,28 +2,21 @@ var current_data;
 var editing_data_id;
 
 function find_data(id){
-    var data = current_data.body.data;
+    let data = current_data.body.data;
     return data.find(function(x){
         return x.id == id;
     });
 }
 
 function find_data_index(id){
-    var data = current_data.body.data;
+    let data = current_data.body.data;
     return data.findIndex(function(x){
         return x.id == id;
     });
 }
 
-function iso8601string(date){
-    var date_year = date.getFullYear();
-    var date_month = ("0"+(date.getMonth()+1)).slice(-2);
-    var date_day = ("0"+date.getDate()).slice(-2);
-    return date_year + '-' + date_month + '-' + date_day;
-}
-
 function set_this_month_date(){
-    var today = iso8601string(new Date());
+    let today = iso8601string(new Date());
     $("#range-selector-to-input").val(today);
     $.getJSON("/user/get/basepoint-date",function(rtndata){
         let year = rtndata.body[0];
@@ -34,35 +27,35 @@ function set_this_month_date(){
 }
 
 function set_this_year_date(){
-    var today = new Date();
+    let today = new Date();
     $("#range-selector-to-input").val(iso8601string(today));
 
-    var fromday = today;
+    let fromday = today;
     fromday.setMonth(0);
     fromday.setDate(1);
     $("#range-selector-from-input").val(iso8601string(fromday));
 }
 
 function set_one_year_date(){
-    var today = new Date();
+    let today = new Date();
     $("#range-selector-to-input").val(iso8601string(today));
 
-    var fromday = today;
+    let fromday = today;
     fromday.setFullYear(fromday.getFullYear()-1);
     $("#range-selector-from-input").val(iso8601string(fromday));
 }
 
 function set_one_month_date(){
-    var today = new Date();
+    let today = new Date();
     $("#range-selector-to-input").val(iso8601string(today));
 
-    var fromday = today;
+    let fromday = today;
     fromday.setMonth(fromday.getMonth()-1);
     $("#range-selector-from-input").val(iso8601string(fromday));
 }
 
 function start_editor(id){
-    var target_data = find_data(id);
+    let target_data = find_data(id);
     if(typeof target_data === "undefined"){
         alert("指定データが見つかりません。\nページをリロードしてやり直してください。\n改善されない場合管理者へ報告してください。\n[id = "+id+"]");
     }else{
@@ -97,7 +90,7 @@ function build_data_table(data){
     current_data = data;
     $('#data-tbody').empty();
     data.body.data.forEach(function(itm){
-        var incometype = "";
+        let incometype = "";
         if(itm.incometype == true){
             incometype = "収入";
         }else{
@@ -117,8 +110,8 @@ function build_data_table(data){
 }
 
 function build_graph(data){
-    var income_data = [];
-    var outlay_data = [];
+    let income_data = [];
+    let outlay_data = [];
 
     data.body.data.forEach(function(itm){
         let catename = itm.category;
@@ -143,8 +136,8 @@ function build_graph(data){
         }
     });
 
-    var wdate = new Date($("#range-selector-from-input").val());
-    var todate = new Date($("#range-selector-to-input").val());
+    let wdate = new Date($("#range-selector-from-input").val());
+    let todate = new Date($("#range-selector-to-input").val());
     while(wdate.getTime() <= todate.getTime()){
         income_data.forEach(function(itm){
             itm.x.push(iso8601string(wdate));
@@ -174,17 +167,13 @@ function build_graph(data){
     Plotly.newPlot("income-change-graph-area",
                    income_data,
                    {barmode: "stack",
-                    font: {size: 18},
-                    xaxis: {tickmode: "linear",
-                            dtick: 24*60*60*1000}
+                    font: {size: 18}
                    });
 
     Plotly.newPlot("outlay-change-graph-area",
                    outlay_data,
                    {barmode: "stack",
-                    font: {size: 18},
-                    xaxis: {tickmode: "linear",
-                            dtick: 24*60*60*1000}
+                    font: {size: 18}
                    });
     return [income_data,outlay_data];
 }
@@ -210,7 +199,7 @@ function build_table(data){
 
 function review_data(){
     if($("#range-selector-form").get(0).reportValidity()==true){
-        var data = {
+        let data = {
             fromdate: $("#range-selector-from-input").val(),
             todate: $("#range-selector-to-input").val()
         };
@@ -245,23 +234,23 @@ function review_data(){
 }
 
 function edit_data(){
-    var target_data = find_data(editing_data_id);
+    let target_data = find_data(editing_data_id);
     if($("#editor-form").get(0).reportValidity() == true && typeof target_data !== "undefined"){
         $("#edit").attr("disabled",true);
         $("#delete").attr("disabled",true);
 
         //read data
-        var dataname = $("#money-data-name").val();
-        var date = $("#date-of-data").val();
-        var typeisincome = false;
+        let dataname = $("#money-data-name").val();
+        let date = $("#date-of-data").val();
+        let typeisincome = false;
         if($("#type-of-input").val() != "outlay"){
             typeisincome = true;
         }
-        var amount = $("#amount-of-money").val();
-        var cate = $("#cate-input").val();
-        var comment = $("#comment-input").val();
+        let amount = $("#amount-of-money").val();
+        let cate = $("#cate-input").val();
+        let comment = $("#comment-input").val();
 
-        var data = {
+        let data = {
             id: target_data.id,
             name: dataname,
             date: date,
@@ -301,11 +290,11 @@ function edit_data(){
 }
 
 function delete_data(){
-    var target_data = find_data(editing_data_id);
+    let target_data = find_data(editing_data_id);
     if($("#editor-form").get(0).reportValidity() == true && typeof target_data !== "undefined"){
         $("#edit").attr("disabled",true);
         $("#delete").attr("disabled",true);
-        var data = {
+        let data = {
             id: target_data.id
         };
         $.ajax({
@@ -338,7 +327,7 @@ function delete_data(){
 }
 
 function save_data_csv(){
-    var text = "id,title,date,value,comment,cate_id,incometype,category_name\n";
+    let text = "id,title,date,value,comment,cate_id,incometype,category_name\n";
     current_data.body.data.forEach(function(itm){
         if(itm.incometype == true){
             text += itm.id
@@ -372,14 +361,14 @@ function save_data_csv(){
                 + "\n";
         }
     });
-    var blob = new Blob([text]);
+    let blob = new Blob([text]);
     $("#dl-btn-area").empty();
     $("#dl-btn-area").append('<a href="'+window.URL.createObjectURL(blob)+'" download="kanekanekane_data.csv">Download here</a>');
 }
 
 function save_data_json(){
-    var text = JSON.stringify(current_data.body.data);
-    var blob = new Blob([text]);
+    let text = JSON.stringify(current_data.body.data);
+    let blob = new Blob([text]);
     $("#dl-btn-area").empty();
     $("#dl-btn-area").append('<a href="'+window.URL.createObjectURL(blob)+'" download="kanekanekane_data.json">Download here</a>');
 }

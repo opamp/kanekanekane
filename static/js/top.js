@@ -1,10 +1,3 @@
-function iso8601string(date){
-    var date_year = date.getFullYear();
-    var date_month = ("0"+(date.getMonth()+1)).slice(-2);
-    var date_day = ("0"+date.getDate()).slice(-2);
-    return date_year + '-' + date_month + '-' + date_day;
-}
-
 function update_allmodal_detalist(){
     var datalisttype = $("#type-of-input").val();
     $("#existingcates").empty();
@@ -118,7 +111,6 @@ function update_user_data(){
         let daily_date_to_graphdata = function(d){
             var rtn = {x:[],y:[]};
             for(let key in d){
-                console.log(String(key));
                 let year = String(key).slice(0,4);
                 let month = String(key).slice(4,6);
                 let date = String(key).slice(6,8);
