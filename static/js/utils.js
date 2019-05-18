@@ -8,3 +8,10 @@ function iso8601string(date){
 function days_two_date(date2,date1){
     return (date2-date1)/86400000;
 }
+
+function get_screen_size(){
+    return {
+        h: window.parent.screen.height,
+        w: window.parent.screen.width
+    };
+}
