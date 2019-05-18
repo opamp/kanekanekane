@@ -184,14 +184,23 @@ function build_graph(data){
                 range: [iso8601string(wdate),iso8601string(todate)]}
         };
     }
-    console.log(change_graph_layout);
-    Plotly.newPlot("income-change-graph-area",
-                   income_data,
-                   change_graph_layout);
+    $("#income-change-graph-area").empty();
+    if(income_data.length > 0){
+        Plotly.newPlot("income-change-graph-area",
+                       income_data,
+                       change_graph_layout);
+    }else{
+        $("#income-change-graph-area").append('<p class="text-center">データがありません</p>');
+    }
 
-    Plotly.newPlot("outlay-change-graph-area",
-                   outlay_data,
-                   change_graph_layout);
+    $("#outlay-change-graph-area").empty();
+    if(outlay_data.length > 0){
+        Plotly.newPlot("outlay-change-graph-area",
+                       outlay_data,
+                       change_graph_layout);
+    }else{
+        $("#outlay-change-graph-area").append('<p class="text-center">データがありません</p>');
+    }
     return [income_data,outlay_data];
 }
 
