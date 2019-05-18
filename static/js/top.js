@@ -34,34 +34,38 @@ function clear_addmodal_input(){
 }
 
 function update_user_data(){
-   //settings load from server DB.
+    // init welcome message.
     $.getJSON("/user/get/userdata",function(data){
         $("#user-welcome").text("ようこそ、"+data.body.username+"さん");
         $("#basepoint-setting").val(data.body.basepoint);
         $("#current-balance").text("現在の残高は"+data.body.balance+"です");
     });
 
+    // init summary table & data table
     $.getJSON("/book/read/simple-summary-data",function(data){
+        // all data
         $("#income-recent-month").text(data.body.incomeall);
         $("#outlay-recent-month").text(data.body.outlayall);
         $("#sum-of-month").text(data.body.incomeall - data.body.outlayall);
 
-        var total_of_date = function(d,dt){
-            var all_income = d.filter(itm => {return itm.incometype == true && itm.recordDate == dt;});
-            var all_outlay = d.filter(itm => {return itm.incometype != true && itm.recordDate == dt;});
-            var total_income = all_income.reduce((acc,x) => acc + x.val,0);
-            var total_outlay = all_outlay.reduce((acc,x) => acc + x.val,0);
+        // today data
+        let total_of_date = function(d,dt){
+            let all_income = d.filter(itm => {return itm.incometype == true && itm.recordDate == dt;});
+            let all_outlay = d.filter(itm => {return itm.incometype != true && itm.recordDate == dt;});
+            let total_income = all_income.reduce((acc,x) => acc + x.val,0);
+            let total_outlay = all_outlay.reduce((acc,x) => acc + x.val,0);
             return {income: total_income, outlay: total_outlay};
         };
-        var today = iso8601string(new Date());
-        var today_total = total_of_date(data.body.data,today);
+        let today = iso8601string(new Date());
+        let today_total = total_of_date(data.body.data,today);
         $("#income-today").text(today_total.income);
         $("#outlay-today").text(today_total.outlay);
         $("#sum-of-today").text(today_total.income - today_total.outlay);
 
+        // recent data table
         $('#recent-data-tbody').empty();
         data.body.data.forEach(function(itm){
-            var incometype = "";
+            let incometype = "";
             if(itm.incometype == true){
                 incometype = "収入";
             }else{
@@ -77,20 +81,21 @@ function update_user_data(){
             );
         });
 
+        // pie graph initialization
         $("#income-pie-graph").empty();
         $("#outlay-pie-graph").empty();
-        var breakdown_to_graphdata = function(d){
-            var rtn = {values: [],labels: []};
+        let breakdown_to_graphdata = function(d){
+            let rtn = {values: [],labels: []};
             for(let key in d){
                 rtn.labels.push(key);
                 rtn.values.push(d[key]);
             }
             return rtn;
         };
-        var income_pie_data = breakdown_to_graphdata(data.body.incomebreakdown);
-        var outlay_pie_data = breakdown_to_graphdata(data.body.outlaybreakdown);
+        let income_pie_data = breakdown_to_graphdata(data.body.incomebreakdown);
+        let outlay_pie_data = breakdown_to_graphdata(data.body.outlaybreakdown);
         if(income_pie_data.values.length != 0){
-            var income_pie = [{
+            let income_pie = [{
                 values: income_pie_data.values,
                 labels: income_pie_data.labels,
                 type: 'pie'
@@ -100,7 +105,7 @@ function update_user_data(){
             $("#income-pie-graph").append('<p class="text-center">データがありません</p>');
         }
         if(outlay_pie_data.values.length != 0){
-            var outlay_pie = [{
+            let outlay_pie = [{
                 values: outlay_pie_data.values,
                 labels: outlay_pie_data.labels,
                 type: 'pie'
@@ -110,7 +115,7 @@ function update_user_data(){
             $("#outlay-pie-graph").append('<p class="text-center">データがありません</p>');
         }
 
-        var daily_date_to_graphdata = function(d){
+        let daily_date_to_graphdata = function(d){
             var rtn = {x:[],y:[]};
             for(let key in d){
                 console.log(String(key));
@@ -159,46 +164,37 @@ function update_user_data(){
 
 function setup_userwelcome_board(){
     //preparation of select options
-    for(var d = 1;d <= 31;d++){
+    for(let d = 1;d <= 31;d++){
         $("#basepoint-setting").append('<option value="' + d + '">' + d + "</option>");
     }
 
     update_user_data();
 }
 
-window.onload = function() {
-    setup_init_addmodal_date();
-    setup_userwelcome_board();
+function set_basepoint(newday){
+    $.get("/user/update/basepoint/simple/" + newday);
+    update_user_data();
+}
 
-    $("#type-of-input").change(function(){
-        update_allmodal_detalist();
-    });
-
-    $("#basepoint-setting").change(function(){
-        var value = $(this).val();
-        $.get("/user/update/basepoint/simple/" + value);
-        update_user_data();
-    });
-
-    $("button#add").click(function() {
+function book_write(){
         if($("#add-input-form").get(0).reportValidity() == true){
             // disable button when sending data
-            var thisbutton = $(this);
+            let thisbutton = $(this);
             thisbutton.attr("disabled",true);
 
             // read values from input/select
-            var dataname = $("#money-data-name").val();
-            var date = $("#date-of-data").val();
-            var typeisincome = false;
+            let dataname = $("#money-data-name").val();
+            let date = $("#date-of-data").val();
+            let typeisincome = false;
             if($("#type-of-input").val() != "outlay"){
                 typeisincome = true;
             }
-            var amount = $("#amount-of-money").val();
-            var cate = $("#cate-input").val();
-            var comment = $("#comment-input").val();
+            let amount = $("#amount-of-money").val();
+            let cate = $("#cate-input").val();
+            let comment = $("#comment-input").val();
 
             // build object to send data
-            var data = {
+            let data = {
                 name: dataname,
                 date: date,
                 incometype: typeisincome,
@@ -235,5 +231,17 @@ window.onload = function() {
         }else{
             console.log("Required form is not filled out.");
         }
+}
+
+window.onload = function() {
+    setup_init_addmodal_date();
+    setup_userwelcome_board();
+
+    $("#type-of-input").change(update_allmodal_detalist);
+
+    $("#basepoint-setting").change(function(){
+        set_basepoint($(this).val());
     });
+
+    $("button#add").click(book_write);
 };
