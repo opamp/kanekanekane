@@ -112,6 +112,8 @@ function build_data_table(data){
 function build_graph(data){
     let income_data = [];
     let outlay_data = [];
+    let wdate = new Date($("#range-selector-from-input").val());
+    let todate = new Date($("#range-selector-to-input").val());
 
     data.body.data.forEach(function(itm){
         let catename = itm.category;
@@ -135,9 +137,6 @@ function build_graph(data){
             }
         }
     });
-
-    let wdate = new Date($("#range-selector-from-input").val());
-    let todate = new Date($("#range-selector-to-input").val());
     while(wdate.getTime() <= todate.getTime()){
         income_data.forEach(function(itm){
             itm.x.push(iso8601string(wdate));
@@ -164,17 +163,35 @@ function build_graph(data){
         wdate.setDate(wdate.getDate()+1);
     }
 
+    wdate = new Date($("#range-selector-from-input").val());
+    todate = new Date($("#range-selector-to-input").val());
+    let change_graph_layout = {};
+    if(days_two_date(todate,wdate) < 6){
+        change_graph_layout = {
+            barmode: "stack",
+            font: {size: 18},
+            xaxis: {
+                dtick: "D",
+                tick0: iso8601string(wdate),
+                range: [iso8601string(wdate),iso8601string(todate)]}
+        };
+    }else{
+        change_graph_layout = {
+            barmode: "stack",
+            font: {size: 18},
+            xaxis: {
+                tick0: iso8601string(wdate),
+                range: [iso8601string(wdate),iso8601string(todate)]}
+        };
+    }
+    console.log(change_graph_layout);
     Plotly.newPlot("income-change-graph-area",
                    income_data,
-                   {barmode: "stack",
-                    font: {size: 18}
-                   });
+                   change_graph_layout);
 
     Plotly.newPlot("outlay-change-graph-area",
                    outlay_data,
-                   {barmode: "stack",
-                    font: {size: 18}
-                   });
+                   change_graph_layout);
     return [income_data,outlay_data];
 }
 
@@ -188,7 +205,7 @@ function build_table(data){
             sum_outlay += itm.val;
         }
     });
-    let days = ((new Date($("#range-selector-to-input").val())) - (new Date($("#range-selector-from-input").val())))/86400000;
+    let days = days_two_date(new Date($("#range-selector-to-input").val()),new Date($("#range-selector-from-input").val()));
     $("#income-sum").text(sum_income);
     $("#income-sum-day").text(Math.round(sum_income/days));
     $("#outlay-sum").text(sum_outlay);

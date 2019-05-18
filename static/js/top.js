@@ -135,22 +135,42 @@ function update_user_data(){
             type: "bar",
             marker: {color: "red"}
         }];
+
+        let daily_income_data_graph_layout = {};
+        let daily_outlay_data_graph_layout = {};
+        if((daily_graph_income_data[0].x).length < 6){
+            daily_income_data_graph_layout = {
+                barmode: "group",
+                font: {size: 18},
+                xaxis: {dtick: "D",
+                        tickformat: "%m/%d"},
+                yaxis: {title: "合計収入"},
+            };
+            daily_outlay_data_graph_layout = {
+                barmode: "group",
+                font: {size: 18},
+                xaxis: {dtick: "D",
+                        tickformat: "%m/%d"},
+                yaxis: {title: "合計出費"}
+            };
+        }else{
+            daily_income_data_graph_layout = {
+                barmode: "group",
+                font: {size: 18},
+                xaxis: {tickformat: "%m/%d"},
+                yaxis: {title: "合計収入"},
+            };
+            daily_outlay_data_graph_layout = {
+                barmode: "group",
+                font: {size: 18},
+                xaxis: {tickformat: "%m/%d"},
+                yaxis: {title: "合計出費"}
+            };
+        }
         Plotly.newPlot('daily-income-data-graph',
-                       daily_graph_income_data,
-                       {
-                           barmode: "group",
-                           font: {size: 18},
-                           xaxis: {dtick: 24*60*60*1000},
-                           yaxis: {title: "合計出費"},
-                       },{responsive: true});
+                       daily_graph_income_data,daily_income_data_graph_layout,{responsive: true});
         Plotly.newPlot('daily-outlay-data-graph',
-                       daily_graph_outlay_data,
-                       {
-                           barmode: "group",
-                           font: {size: 18},
-                           xaxis: {dtick: 24*60*60*1000},
-                           yaxis: {title: "合計出費"}
-                       },{responsive: true});
+                       daily_graph_outlay_data,daily_outlay_data_graph_layout,{responsive: true});
     });
 }
 
