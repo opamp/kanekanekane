@@ -55,7 +55,10 @@
 
 ;; temporary implementation
 (defroute ("/signup" :method :GET) ()
-  (format nil "This method has not been implemented yet. Please contact an admitistrator of this service."))
+  (if-login
+   *session*
+   (format nil "You are already logged in.")
+   (render #p"signup.html")))
 ; (defroute ("/signup" :method :POST) (&key _parsed))
 
 (defroute ("/signout" :method :GET) ()

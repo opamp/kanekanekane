@@ -10,8 +10,7 @@ CREATE TABLE IF NOT EXISTS categories (
        id serial primary key,
        income boolean not null,
        catename varchar(32) not null,
-       username varchar(32) not null references users(username)
-);
+       username varchar(32) not null references users(username));
 
 CREATE TABLE IF NOT EXISTS book (
        id bigserial primary key,
@@ -19,5 +18,11 @@ CREATE TABLE IF NOT EXISTS book (
        record_date date not null,
        val integer not null,
        comment text,
-       cate_id integer not null references categories(id)
+       cate_id integer not null references categories(id));
+
+CREATE TABLE IF NOT EXISTS pre_users (
+       username varchar(32) primary key,
+       password varchar(128) not null,
+       balance integer not null,
+       contactdata text
 );
