@@ -15,10 +15,27 @@ Webで動作する家計簿的な何か。
 
 Webサーバー上で動かしてWebブラウザでアクセス。
 
-### 注意
+### ユーザー登録方法
 
-version 0.0.1はとりあえず一人で使う分には問題ないくらいな感じにできた程度なのでユーザー登録ページが実装されていない。
-なので、ユーザーを登録するには直接DBにinsertするか、kanekanekane.user-control:user-addをREPLから呼び出す。
+#### signup機能を利用する場合
+
+src/config.lispのsignup-enableにtを設定するとsignupページが利用できるようになる。
+
+    (defparameter *signup-enable* t)
+
+signupページからユーザー登録を行うことで新規ユーザーを登録できる。
+ただし今のところsignupページは簡単に作っただけなので所謂CAPTCHAのような機能はない。
+
+#### Common LispのREPLから登録する方法
+
+kanekanekane.user-control:user-add関数にユーザー名とパスワードを渡すことでユーザー登録できる。
+成功した場合はユーザー情報が返り、すでにユーザーが存在する場合はnilが返る。
+
+quicklispなどでkanekanekane.asdをロードする。
+
+    (ql:quickload :kanekanekane)
+
+その後、user-add関数を呼び出す。
 
     (kanekanekane.user-control:user-add "username" "password")
 
