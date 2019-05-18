@@ -1,7 +1,24 @@
 {% extends "layouts/default-bootstrap.html" %}
 {% block title %}Sign in{% endblock %}
 {% block head-additional-content %}
+<link href="/css/signup.css" rel="stylesheet">
+<script type="text/javascript" src="/js/signup.js"></script>
 {% endblock %}
 {% block content %}
-Empty page
+<main role="main">
+    <div id="signup-card" class="card border-dark mx-auto">
+        <div class="card-header">Sign up</div>
+        <div id="signup-form-area" class="card-body">
+            <form id="signup-form">
+                <label for="inputUsername">ユーザー名:</label>
+                <input id="inputUsername" class="form-control" placeholder="Username" maxlength="32" type="text" required>
+                <label for="inputPass">パスワード:</label>
+                <input id="inputPass" class="form-control" placeholder="Password" autocomplete="off" type="password" required>
+                <label for="inputInitB">初期残高:</label>
+                <input id="inputInitB" class="form-control" value="0" type="number" required>
+                <button type="button" id="signup-btn" class="btn btn-dark btn-lg btn-block">Sign up</button>
+            </form>
+        </div>
+    </div>
+</main>
 {% endblock %}

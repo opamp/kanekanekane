@@ -19,10 +19,3 @@ CREATE TABLE IF NOT EXISTS book (
        val integer not null,
        comment text,
        cate_id integer not null references categories(id));
-
-CREATE TABLE IF NOT EXISTS pre_users (
-       username varchar(32) primary key,
-       password varchar(128) not null,
-       balance integer not null,
-       contactdata text
-);

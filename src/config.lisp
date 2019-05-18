@@ -8,6 +8,7 @@
            :*application-root*
            :*static-directory*
            :*template-directory*
+           :*signup-enable*
            :appenv
            :developmentp
            :productionp))
@@ -18,6 +19,7 @@
 (defparameter *application-root*   (asdf:system-source-directory :kanekanekane))
 (defparameter *static-directory*   (merge-pathnames #P"static/" *application-root*))
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
+(defparameter *signup-enable* nil)
 
 (defconfig :common
     `(:databases ((:maindb :postgres :host "localhost" :database-name "kanekanekane_devel" :username "devel"))))

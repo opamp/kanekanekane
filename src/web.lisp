@@ -58,8 +58,22 @@
   (if-login
    *session*
    (format nil "You are already logged in.")
-   (render #p"signup.html")))
-; (defroute ("/signup" :method :POST) (&key _parsed))
+   (if *signup-enable*
+       (render #p"signup.html")
+       (render #p"disable-signup.html"))))
+
+(defroute ("/signup" :method :POST) (&key _parsed)
+  (let ((name (cdr (assoc "name" _parsed :test #'string=)))
+        (password (cdr (assoc "password" _parsed :test #'string=)))
+        (initbalance (cdr (assoc "balance" _parsed :test #'string=))))
+    (render-json
+     (if (kanekanekane.user-control:prepare-password password)
+         (if (kanekanekane.user-control:user-add name password)
+             (if (kanekanekane.user-control:change-balance initbalance name)
+                 (json-post-return 0 "OK")
+                 (json-post-return 3 "Failed to set balance data"))
+             (json-post-return 2 "User exists"))
+         (json-post-return 1 "Invalid password")))))
 
 (defroute ("/signout" :method :GET) ()
   (setf (gethash :username *session*) nil)
