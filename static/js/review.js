@@ -15,7 +15,6 @@ function find_data_index(id){
     });
 }
 
-
 function update_allmodal_detalist(){
     let datalisttype = $("#type-of-input").val();
     $("#existingcates").empty();
@@ -127,6 +126,45 @@ function build_data_table(data){
 }
 
 function build_graph(data){
+    // pie graph
+    let income_pie_data = {values: [],labels: [],type: "pie"};
+    let outlay_pie_data = {values: [],labels: [],type: "pie"};
+
+    data.body.data.forEach(function(itm){
+        let category_equal = function(i){return i == itm.category;};
+        if(itm.incometype == true){
+            let indexnum = income_pie_data.labels.findIndex(category_equal);
+            if(indexnum >= 0){
+                income_pie_data.values[indexnum] += itm.val;
+            }else{
+                income_pie_data.labels.push(itm.category);
+                income_pie_data.values.push(itm.val);
+            }
+        }else{
+            let indexnum = outlay_pie_data.labels.findIndex(category_equal);
+            if(indexnum >= 0){
+                outlay_pie_data.values[indexnum] += itm.val;
+            }else{
+                outlay_pie_data.labels.push(itm.category);
+                outlay_pie_data.values.push(itm.val);
+            }
+        }
+    });
+
+    $("#income-pie-graph").empty();
+    $("#outlay-pie-graph").empty();
+    if(income_pie_data.labels.length > 0){
+        Plotly.newPlot("income-pie-graph",[income_pie_data],{font: {size: 18},automargin: true},{responsive: true});
+    }else{
+        $("#income-pie-graph").append('<p class="text-center">データがありません</p>');
+    }
+    if(outlay_pie_data.labels.length > 0){
+        Plotly.newPlot("outlay-pie-graph",[outlay_pie_data],{font: {size: 18},automargin: true},{responsive: true});
+    }else{
+        $("#outlay-pie-graph").append('<p class="text-center">データがありません</p>');
+    }
+
+    // stacked bar graph
     let income_data = [];
     let outlay_data = [];
     let wdate = new Date($("#range-selector-from-input").val());
@@ -218,6 +256,7 @@ function build_graph(data){
     }else{
         $("#outlay-change-graph-area").append('<p class="text-center">データがありません</p>');
     }
+
     return [income_data,outlay_data];
 }
 
