@@ -15,6 +15,23 @@ function find_data_index(id){
     });
 }
 
+
+function update_allmodal_detalist(){
+    let datalisttype = $("#type-of-input").val();
+    $("#existingcates").empty();
+    $.getJSON("/category/get/all",function(data){
+        if(datalisttype == "outlay"){
+            $.each(data.body.outlay,function(index,val){
+                $("#existingcates").append('<option value="' + val + '">');
+            });
+        }else{
+            $.each(data.body.income,function(index,val){
+                $("#existingcates").append('<option value="' + val + '">');
+            });
+        }
+    });
+}
+
 function set_this_month_date(){
     let today = iso8601string(new Date());
     $("#range-selector-to-input").val(today);
@@ -402,7 +419,9 @@ function save_data_json(){
 window.onload = function(){
     editing_data_id = -1;
     set_this_month_date();
+    update_allmodal_detalist();
     $("button#range-select-button").click(review_data);
+    $("#type-of-input").change(update_allmodal_detalist);
     $("button#edit").click(edit_data);
     $("button#delete").click(delete_data);
     $("button#data-gen-btn-csv").click(save_data_csv);
