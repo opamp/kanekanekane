@@ -1,5 +1,5 @@
 (defsystem "kanekanekane"
-  :version "0.0.4"
+  :version "0.0.5"
   :author "Masahiro Nagata"
   :license ""
   :depends-on ("clack"
