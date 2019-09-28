@@ -19,7 +19,7 @@ function update_allmodal_detalist(){
 function setup_init_addmodal_date(){
     var today = iso8601string(new Date());
     $("#date-of-data").val(today);
-    $("#date-of-data").attr("max",today);
+    //$("#date-of-data").attr("max",today);
     update_allmodal_detalist();
 }
 
