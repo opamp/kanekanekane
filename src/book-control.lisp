@@ -13,6 +13,7 @@
            :rewrite-data
            :eliminate-data
            :read-data
+           :calculate-balance
            :simplified-book-data
            :simplified-book-lst
            :read-and-simplified-data

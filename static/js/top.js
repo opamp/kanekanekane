@@ -33,7 +33,39 @@ function update_user_data(){
     $.getJSON("/user/get/userdata",function(data){
         $("#user-welcome").text("ようこそ、"+data.body.username+"さん");
         $("#basepoint-setting").val(data.body.basepoint);
-        $("#current-balance").text("現在の残高は"+data.body.balance+"です");
+        //$("#current-balance").text("現在の残高は"+data.body.balance+"です");
+        let balance_data = data.body.balance;
+        let tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate()+1);
+        let date_range = {
+            fromdate: tomorrow.getFullYear() + '-' + (tomorrow.getMonth() + 1) + '-' + tomorrow.getDate()
+        };
+        $.ajax({
+            type: "post",
+            url: "/book/calculate-balance",
+            data: JSON.stringify(date_range),
+            contentType: 'application/json',
+            dataType: "json",
+            success: function(jsondata){
+                if(jsondata.code == 0){
+                    let future_balance = jsondata.body;
+                    let gobi;
+                    if(future_balance > 0){
+                        gobi = "増額予定";
+                    }else{
+                        gobi = "減額予定";
+                    }
+                    $("#current-balance").text("現在の残高は" + (balance_data - future_balance) + "です（将来的に" + future_balance + "の" + gobi + "）");
+                }else{
+                    alert("現在の残高データの取得に問題が発生しました。\nネットワークの状態をチェックした後ページをリロードしてください。\n改善しない場合は管理者へ連絡してください。");
+                    console.log(jsondata);
+                }
+            },
+            error: function(){
+                console.log("send error");
+                alert("サーバーへのデータ送信時に問題が発生しました。\nページをリロードしてやりなおしてください。\n改善しない場合はサーバー管理者へお問い合わせください。");
+            }
+        });
     });
 
     // init summary table & data table

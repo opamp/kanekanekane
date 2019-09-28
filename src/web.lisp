@@ -268,6 +268,16 @@
                                                                   :initial-contents s-data))))))
    (throw-code 403)))
 
+(defroute ("/book/calculate-balance" :method :POST) (&key _parsed)
+  (if-login
+   *session*
+   (let ((username (gethash :username *session*))
+         (from-date (cdr (assoc "fromdate" _parsed :test #'string=)))
+         (to-date (cdr (assoc "todate" _parsed :test #'string=))))
+     (render-json
+      (json-post-return 0 "OK" (kanekanekane.book-control:calculate-balance username :from from-date :to to-date))))
+   (throw-code 403)))
+
 ;;
 ;; Error pages
 
