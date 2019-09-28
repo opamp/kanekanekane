@@ -75,7 +75,6 @@
         (update-balance-with-username username new-balance)
         t))))
 
-
 (defun prepare-basepoint (day)
   (let ((day (handler-case (parse-integer day)
                (error () nil))))

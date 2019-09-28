@@ -148,6 +148,17 @@
           (setf outlay-data (append outlay-data (list itm)))))
     (values income-data outlay-data)))
 
+(defun calculate-balance (username &key (offset 0) from to)
+  (let ((data (read-items from to username))
+        (sum offset))
+    (dolist (itm data)
+      (let ((income (getf itm :income))
+            (val (getf itm :val)))
+        (if income
+            (setf sum (+ sum val))
+            (setf sum (- sum val)))))
+    sum))
+
 (defun make-basepoint-date (basepoint-day)
   (let* ((today (today-list))
          (basepoint-year (if (<= basepoint-day (third today))
