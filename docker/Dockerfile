@@ -12,7 +12,7 @@ WORKDIR /home/user
 RUN curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/roswell.tar.gz
 RUN tar xfz roswell.tar.gz &&rm -f roswell.tar.gz
 WORKDIR /home/user/roswell
-RUN makepkg && sudo pacman -U *.pkg.tar.xz --noconfirm
+RUN makepkg && sudo pacman -U *.pkg.tar.zst --noconfirm
 WORKDIR /home/user
 RUN rm -fr roswell
 
